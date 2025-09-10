@@ -26,7 +26,6 @@ const HomePage = () => {
         <VideoAndPics />
         <UpcomingEventsSection />
         <LatestNews />
-        <VideoAndPics />
         <PartnersSection />
         <SocialMediaPresence />
       </div>
