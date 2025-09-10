@@ -1,0 +1,114 @@
+@import "tailwindcss";
+
+:root {
+  /* Core theme colors */
+  --background: #ffffff;
+  --foreground: #171717;
+  
+  /* MUHASSO Theme Colors */
+  --sea-blue-50: #e0f7fa;
+  --sea-blue-100: #b2ebf2;
+  --sea-blue-200: #80deea;
+  --sea-blue-300: #4dd0e1;
+  --sea-blue-400: #26c6da;
+  --sea-blue-500: #00bcd4;
+  --sea-blue-600: #00acc1;
+  --sea-blue-700: #0097a7;
+  --sea-blue-800: #00838f;
+  --sea-blue-900: #006064;
+  
+  --violet-50: #f3e5f5;
+  --violet-100: #e1bee7;
+  --violet-200: #ce93d8;
+  --violet-300: #ba68c8;
+  --violet-400: #ab47bc;
+  --violet-500: #9c27b0;
+  --violet-600: #8e24aa;
+  --violet-700: #7b1fa2;
+  --violet-800: #6a1b9a;
+  --violet-900: #4a148c;
+}
+
+/* Theme colors */
+:root {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: 'Inter', Arial, Helvetica, sans-serif;
+}
+
+/* Add custom utility classes for our theme colors */
+.text-sea-blue-50 { color: var(--sea-blue-50); }
+.text-sea-blue-100 { color: var(--sea-blue-100); }
+.text-sea-blue-200 { color: var(--sea-blue-200); }
+.text-sea-blue-300 { color: var(--sea-blue-300); }
+.text-sea-blue-400 { color: var(--sea-blue-400); }
+.text-sea-blue-500 { color: var(--sea-blue-500); }
+.text-sea-blue-600 { color: var(--sea-blue-600); }
+.text-sea-blue-700 { color: var(--sea-blue-700); }
+.text-sea-blue-800 { color: var(--sea-blue-800); }
+.text-sea-blue-900 { color: var(--sea-blue-900); }
+
+.bg-sea-blue-50 { background-color: var(--sea-blue-50); }
+.bg-sea-blue-100 { background-color: var(--sea-blue-100); }
+.bg-sea-blue-200 { background-color: var(--sea-blue-200); }
+.bg-sea-blue-300 { background-color: var(--sea-blue-300); }
+.bg-sea-blue-400 { background-color: var(--sea-blue-400); }
+.bg-sea-blue-500 { background-color: var(--sea-blue-500); }
+.bg-sea-blue-600 { background-color: var(--sea-blue-600); }
+.bg-sea-blue-700 { background-color: var(--sea-blue-700); }
+.bg-sea-blue-800 { background-color: var(--sea-blue-800); }
+.bg-sea-blue-900 { background-color: var(--sea-blue-900); }
+
+/* Animation keyframes */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(156, 39, 176, 0.4);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(156, 39, 176, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(156, 39, 176, 0);
+  }
+}
+
+/* Utility animation classes */
+.animate-fade-in {
+  animation: fadeIn 1s ease-out forwards;
+}
+
+.animate-slide-up {
+  animation: slideUp 0.8s ease-out forwards;
+}
+
+.animate-pulse {
+  animation: pulse 2s infinite;
+}
