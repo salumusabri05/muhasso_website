@@ -23,20 +23,22 @@ const HeroSection = () => {
 
         {/* Main heading */}
         <h1 className="text-white text-5xl md:text-7xl font-bold mb-12 leading-tight">
-          Medical Students
+          Student Excellence
           <br />
           <span className="bg-gradient-to-r from-blue-300 to-white bg-clip-text text-transparent">
-            Tanzania
+            Leadership
           </span>
         </h1>
 
         {/* Description */}
         <div className="max-w-4xl mb-12">
           <p className="text-blue-100 text-lg md:text-xl leading-relaxed">
-            The Muhimbili University Students Organization (MUHASSO), established at Muhimbili University, 
-            is one of Tanzania&#39;s most active student-run organizations. It represents, connects and engages 
-            every day with an inspiring and engaging network of medical students from across Tanzania, 
-            fostering excellence in medical education and healthcare.
+            MUHASSO is the Muhimbili University Health and Allied Sciences Students&apos; Organization, 
+            representing and uniting all health science students at Muhimbili University. 
+            As the official student government, we advocate for quality education, student welfare, 
+            and professional development across all health disciplines. Through leadership, community 
+            service, and collaboration with national and international partners, we empower the next 
+            generation of healthcare leaders in Tanzania.
           </p>
         </div>
 
@@ -47,14 +49,7 @@ const HeroSection = () => {
           </button>
           
           <button className="border-2 border-white hover:bg-white hover:text-blue-900 text-white font-semibold px-8 py-4 rounded-full transition-all duration-300 hover:scale-105">
-            Student Exchange
-          </button>
-        </div>
-
-        {/* Bottom button */}
-        <div className="mt-8">
-          <button className="bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white font-semibold px-8 py-4 rounded-full transition-all duration-300 hover:scale-105 shadow-lg">
-            Annual Meeting 2025
+            Join MUHASSO
           </button>
         </div>
       </div>

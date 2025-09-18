@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { Search, Menu, ChevronDown, X, Globe } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
+import Image from 'next/image';
 
 const Header = () => {
   const pathname = usePathname();
@@ -15,10 +16,10 @@ const Header = () => {
   const getActiveItem = (path) => {
     if (path === '/') return 'Home';
     if (path === '/associations') return 'Associations';
-    if (path === '/events') return 'Events';
     if (path === '/news') return 'News & Events';
     if (path === '/resources') return 'Resource Center';
     if (path === '/contact') return 'Contact & Support';
+    if (path.startsWith('/associations/')) return 'Associations'; // For association details pages
     return 'Home'; // Default to Home
   };
   
@@ -54,7 +55,6 @@ const Header = () => {
     English: [
       { name: 'Home', href: '/' },
       { name: 'Associations', href: '/associations' },
-      { name: 'Events', href: '/events' },
       { name: 'News & Events', href: '/news' },
       { name: 'Resource Center', href: '/resources' },
       { name: 'Contact & Support', href: '/contact' },
@@ -62,7 +62,6 @@ const Header = () => {
     Swahili: [
       { name: 'Mwanzo', href: '/' },
       { name: 'Vyama', href: '/associations' },
-      { name: 'Matukio', href: '/events' },
       { name: 'Habari na Matukio', href: '/news' },
       { name: 'Kituo cha Rasilimali', href: '/resources' },
       { name: 'Mawasiliano na Msaada', href: '/contact' },
@@ -75,9 +74,14 @@ const Header = () => {
     <header className="w-full bg-gray-100 shadow-md sticky top-0 z-50">
       <div className="flex items-center justify-between max-w-7xl mx-auto px-6 py-4 relative">
         {/* Logo */}
-        <div className="flex items-center space-x-3">
-          <div className="w-12 h-12 bg-blue-900 rounded-full flex items-center justify-center">
-            <div className="text-white font-bold text-lg">M</div>
+        <Link href="/" className="flex items-center space-x-3">
+          <div className="relative w-12 h-12">
+            <Image 
+              src="/asscociation_details/muhasso_logo.png" 
+              alt="MUHASSO Logo" 
+              fill
+              className="object-contain"
+            />
           </div>
           <div className="flex flex-col">
             <span className="text-blue-900 font-bold text-xl">MUHASSO</span>
@@ -86,7 +90,7 @@ const Header = () => {
               Students Organization
             </span>
           </div>
-        </div>
+        </Link>
 
         {/* Search Bar - Hide on mobile */}
         <div className="hidden md:block flex-1 max-w-md mx-8">
@@ -102,11 +106,6 @@ const Header = () => {
 
         {/* Right Section */}
         <div className="flex items-center space-x-4">
-          {/* Student Exchange Program Button - Hide on mobile */}
-          <button className="hidden sm:block bg-blue-900 hover:bg-blue-800 text-white px-6 py-2 rounded-full font-medium transition-colors duration-200">
-            Student Exchange Program
-          </button>
-
           {/* Language Selector - Hide on mobile */}
           <div 
             id="language-dropdown"

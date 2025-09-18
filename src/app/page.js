@@ -11,7 +11,6 @@ import LatestNews from '../components/News';
 import KnowMoreAboutUs from '../components/AboutUs';
 import AssociationsComponent from '../components/AssociationsComponent';
 import SocialMediaPresence from '../components/SocialMedia';
-import VideoAndPics from '../components/VideoAndPics';
 
 const HomePage = () => {
   return (
@@ -23,7 +22,6 @@ const HomePage = () => {
         <StatsSection />
         <AssociationsComponent />
         <KnowMoreAboutUs />
-        <VideoAndPics />
         <UpcomingEventsSection />
         <LatestNews />
         <PartnersSection />

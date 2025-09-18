@@ -1,31 +1,11 @@
-import { Globe, Users, Heart, BookOpen, Award, ExternalLink, MapPin, Calendar } from 'lucide-react';
+import { Users, Award, ExternalLink, MapPin, Calendar } from 'lucide-react';
+import Link from 'next/link';
+import Image from 'next/image';
 
 const AssociationsComponent = () => {
   const associations = [
     {
       id: 1,
-      name: "TAMSA",
-      fullName: "Tanzania Medical Students' Association",
-      description: "The national umbrella organization representing all medical students across Tanzania, promoting medical education excellence and student welfare.",
-      type: "National",
-      established: "1985",
-      members: "15,000+",
-      location: "Tanzania",
-      focus: ["Medical Education", "Student Welfare", "Policy Advocacy", "Professional Development"],
-      icon: <Heart className="w-8 h-8" />,
-      gradient: "from-green-500 to-emerald-600",
-      bgColor: "bg-green-50",
-      borderColor: "border-green-200",
-      textColor: "text-green-700",
-      activities: [
-        "Annual Medical Students Conference",
-        "Research Symposiums",
-        "Community Health Programs",
-        "Student Rights Advocacy"
-      ]
-    },
-    {
-      id: 2,
       name: "TABESA",
       fullName: "Tanzania Biomedical Engineering Students Association",
       description: "Advancing biomedical engineering education and innovation across Tanzania, bridging the gap between engineering technology and healthcare solutions.",
@@ -47,91 +27,47 @@ const AssociationsComponent = () => {
       ]
     },
     {
-      id: 3,
-      name: "IFMSA",
-      fullName: "International Federation of Medical Students' Associations",
-      description: "The world's largest and oldest independent organization representing associations of medical students internationally, promoting global health initiatives.",
-      type: "International",
-      established: "1951",
-      members: "1.3M+",
-      location: "Global",
-      focus: ["Global Health", "Medical Education", "Human Rights", "Public Health"],
-      icon: <Globe className="w-8 h-8" />,
-      gradient: "from-purple-500 to-pink-600",
-      bgColor: "bg-purple-50",
-      borderColor: "border-purple-200",
-      textColor: "text-purple-700",
+      id: 7,
+      name: "APSTA",
+      fullName: "Association of Physiotherapy Students of Tanzania",
+      description: "The national association representing physiotherapy students across Tanzania, promoting excellence in physiotherapy education and professional development.",
+      type: "National",
+      established: "2010",
+      members: "3,000+",
+      location: "Tanzania",
+      focus: ["Physiotherapy Education", "Clinical Skills", "Research", "Professional Advocacy"],
+      icon: <div className="relative w-8 h-8"><Image src="/asscociation_details/APSTA LOGO.jpg" alt="APSTA Logo" fill className="object-contain" /></div>,
+      gradient: "from-amber-500 to-orange-600",
+      bgColor: "bg-amber-50",
+      borderColor: "border-amber-200",
+      textColor: "text-amber-700",
       activities: [
-        "Student Exchange Programs",
-        "Global Health Projects",
-        "Policy Development",
-        "International Conferences"
+        "Annual Conference",
+        "Clinical Skills Workshops",
+        "Community Rehabilitation Programs",
+        "Research Symposiums"
       ]
     },
     {
-      id: 4,
-      name: "MUHASSO",
-      fullName: "Muhimbili University Health and Allied Sciences Students' Organization",
-      description: "The official student organization at Muhimbili University, representing health sciences students and promoting academic excellence and student welfare.",
-      type: "University",
-      established: "1991",
-      members: "12,000+",
-      location: "Dar es Salaam, Tanzania",
-      focus: ["Student Representation", "Academic Support", "Health Advocacy", "Community Service"],
-      icon: <BookOpen className="w-8 h-8" />,
-      gradient: "from-red-500 to-rose-600",
-      bgColor: "bg-red-50",
-      borderColor: "border-red-200",
-      textColor: "text-red-700",
+      id: 8,
+      name: "TOTSA",
+      fullName: "Tanzania Occupational Therapy Students Association",
+      description: "National organization representing occupational therapy students in Tanzania, promoting excellence in occupational therapy education and practice.",
+      type: "National",
+      established: "2013",
+      members: "1,500+",
+      location: "Tanzania",
+      focus: ["Occupational Therapy", "Clinical Practice", "Professional Recognition", "Community Service"],
+      icon: <div className="relative w-8 h-8"><Image src="/asscociation_details/TOTSA LOGO(TANZANIA OCCUPATIONAL THERAY STUDENTS ASSOCIATIO).jpg" alt="TOTSA Logo" fill className="object-contain" /></div>,
+      gradient: "from-cyan-500 to-blue-600",
+      bgColor: "bg-cyan-50",
+      borderColor: "border-cyan-200",
+      textColor: "text-cyan-700",
       activities: [
-        "Student Government",
-        "Academic Support Programs",
-        "Health Awareness Campaigns",
-        "Cultural Events"
-      ]
-    },
-    {
-      id: 5,
-      name: "EAMSA",
-      fullName: "East African Medical Students' Association",
-      description: "Regional federation uniting medical student associations across East Africa to promote medical education and regional health cooperation.",
-      type: "Regional",
-      established: "2003",
-      members: "45,000+",
-      location: "East Africa",
-      focus: ["Regional Cooperation", "Medical Education", "Health Policy", "Cultural Exchange"],
-      icon: <Users className="w-8 h-8" />,
-      gradient: "from-orange-500 to-yellow-600",
-      bgColor: "bg-orange-50",
-      borderColor: "border-orange-200",
-      textColor: "text-orange-700",
-      activities: [
-        "Regional Conferences",
-        "Student Exchange Programs",
-        "Research Collaborations",
-        "Policy Advocacy"
-      ]
-    },
-    {
-      id: 6,
-      name: "AMSA",
-      fullName: "African Medical Students' Association",
-      description: "Continental organization promoting African medical students' interests, pan-African health initiatives, and medical education development across Africa.",
-      type: "Continental",
-      established: "2008",
-      members: "200,000+",
-      location: "Africa",
-      focus: ["Pan-African Health", "Medical Education", "Research", "Leadership Development"],
-      icon: <MapPin className="w-8 h-8" />,
-      gradient: "from-teal-500 to-cyan-600",
-      bgColor: "bg-teal-50",
-      borderColor: "border-teal-200",
-      textColor: "text-teal-700",
-      activities: [
-        "Continental Health Summit",
-        "Medical Research Programs",
-        "Leadership Training",
-        "Health Policy Development"
+        "OT Day Celebrations",
+        "Community Outreach Programs",
+        "Clinical Skills Workshops",
+        "Student Research Forum"
       ]
     }
   ];
@@ -157,7 +93,7 @@ const AssociationsComponent = () => {
             Our Associations
           </h2>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Connecting with medical and professional organizations across Tanzania, East Africa, and globally to strengthen our impact and opportunities.
+            Connecting with medical and professional organizations across Tanzania to strengthen our impact and opportunities.
           </p>
         </div>
 
@@ -236,10 +172,10 @@ const AssociationsComponent = () => {
               </div>
 
               {/* Learn More Button */}
-              <button className={`w-full bg-gradient-to-r ${association.gradient} text-white font-semibold py-3 px-6 rounded-full hover:shadow-lg transition-all duration-200 flex items-center justify-center gap-2 group-hover:scale-105`}>
+              <Link href={`/associations/details/${association.name.toLowerCase()}`} className={`w-full bg-gradient-to-r ${association.gradient} text-white font-semibold py-3 px-6 rounded-full hover:shadow-lg transition-all duration-200 flex items-center justify-center gap-2 group-hover:scale-105`}>
                 Learn More
                 <ExternalLink className="w-4 h-4" />
-              </button>
+              </Link>
             </div>
           ))}
         </div>
@@ -251,8 +187,8 @@ const AssociationsComponent = () => {
               Building Stronger Networks
             </h3>
             <p className="text-gray-600 mb-6 max-w-2xl mx-auto">
-              Through these partnerships, MUHASSO students gain access to international opportunities, 
-              research collaborations, exchange programs, and a global network of healthcare professionals.
+              Through these partnerships, MUHASSO students gain access to professional opportunities, 
+              research collaborations, and a network of healthcare professionals across Tanzania.
             </p>
             <button className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-8 rounded-full transition-colors duration-200">
               Join Our Network
