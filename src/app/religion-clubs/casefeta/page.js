@@ -13,6 +13,11 @@ import CalendarView from '../../../components/religion-clubs/CalendarView';
 export default function CasefetaPage() {
   const [activeTab, setActiveTab] = useState('overview');
   
+  // Add animation styles
+  React.useEffect(() => {
+    // This empty effect is just to ensure the component re-renders for animations
+  }, []);
+  
   // Dummy data for CASEFETA
   const organization = {
     name: 'CASEFETA',
@@ -116,7 +121,7 @@ export default function CasefetaPage() {
   };
 
   return (
-    <main className="min-h-screen flex flex-col">
+    <main className="min-h-screen flex flex-col bg-white animate-fadeIn">
       <Header />
       
       <div className="flex-grow container mx-auto px-6 py-12">
@@ -133,7 +138,7 @@ export default function CasefetaPage() {
           </div>
           
           {/* Organization Header */}
-          <div className="bg-blue-50 rounded-xl p-6 mb-8">
+          <div className="bg-blue-50 rounded-xl p-6 mb-8 animate-slideDown">
             <div className="flex flex-col md:flex-row items-center md:items-start gap-6">
               {/* Logo */}
               <div className="shrink-0">
@@ -206,11 +211,11 @@ export default function CasefetaPage() {
           </div>
           
           {/* Tab Navigation */}
-          <div className="mb-8 border-b border-gray-200">
+          <div className="mb-8 border-b border-gray-200 animate-slideUp">
             <nav className="flex overflow-x-auto">
               <button
                 onClick={() => setActiveTab('overview')}
-                className={`px-4 py-3 font-medium whitespace-nowrap border-b-2 transition-colors ${
+                className={`px-4 py-3 font-medium whitespace-nowrap border-b-2 transition-all ${
                   activeTab === 'overview'
                     ? 'border-blue-600 text-blue-900'
                     : 'border-transparent text-gray-600 hover:text-blue-900 hover:border-blue-300'
@@ -255,8 +260,8 @@ export default function CasefetaPage() {
           <div className="mb-12">
             {/* Overview Tab */}
             {activeTab === 'overview' && (
-              <div>
-                <section className="mb-8">
+              <div className="animate-fadeIn">
+                <section className="mb-8 animate-slideInLeft" style={{ animationDelay: '100ms' }}>
                   <h2 className="text-2xl font-bold text-blue-900 mb-4">About CASEFETA</h2>
                   <div className="prose max-w-none text-gray-700">
                     {organization.description.split('\n\n').map((paragraph, i) => (
@@ -265,7 +270,7 @@ export default function CasefetaPage() {
                   </div>
                 </section>
                 
-                <section className="mb-8">
+                <section className="mb-8 animate-slideInLeft" style={{ animationDelay: '200ms' }}>
                   <h2 className="text-2xl font-bold text-blue-900 mb-4">Regular Schedule</h2>
                   <div className="bg-white rounded-lg shadow-sm overflow-hidden">
                     <table className="min-w-full">
@@ -301,7 +306,7 @@ export default function CasefetaPage() {
                   </div>
                 </section>
                 
-                <section>
+                <section className="animate-slideInLeft" style={{ animationDelay: '300ms' }}>
                   <h2 className="text-2xl font-bold text-blue-900 mb-4">Upcoming Events</h2>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
                     {organization.events.slice(0, 2).map((event) => (
@@ -323,11 +328,13 @@ export default function CasefetaPage() {
             
             {/* Events Tab */}
             {activeTab === 'events' && (
-              <div>
+              <div className="animate-fadeIn">
                 <h2 className="text-2xl font-bold text-blue-900 mb-6">Upcoming Events</h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  {organization.events.map((event) => (
-                    <EventCard key={event.id} event={event} />
+                  {organization.events.map((event, index) => (
+                    <div key={event.id} className="animate-slideUp" style={{ animationDelay: `${index * 100}ms` }}>
+                      <EventCard event={event} />
+                    </div>
                   ))}
                 </div>
               </div>
@@ -335,11 +342,13 @@ export default function CasefetaPage() {
             
             {/* Leaders Tab */}
             {activeTab === 'leaders' && (
-              <div>
+              <div className="animate-fadeIn">
                 <h2 className="text-2xl font-bold text-blue-900 mb-6">Leadership Team</h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                   {organization.leaders.map((leader, index) => (
-                    <LeaderCard key={index} leader={leader} />
+                    <div key={index} className="animate-slideUp" style={{ animationDelay: `${index * 100}ms` }}>
+                      <LeaderCard leader={leader} />
+                    </div>
                   ))}
                 </div>
               </div>
@@ -347,7 +356,7 @@ export default function CasefetaPage() {
             
             {/* Calendar Tab */}
             {activeTab === 'calendar' && (
-              <div>
+              <div className="animate-fadeIn">
                 <h2 className="text-2xl font-bold text-blue-900 mb-6">Event Calendar</h2>
                 <CalendarView events={organization.events} />
               </div>
@@ -355,7 +364,7 @@ export default function CasefetaPage() {
           </div>
           
           {/* Join Section */}
-          <section className="bg-blue-50 rounded-xl p-6">
+          <section className="bg-blue-50 rounded-xl p-6 animate-slideUp delay-300">
             <h2 className="text-2xl font-bold text-blue-900 mb-4">How to Join CASEFETA</h2>
             
             <p className="text-gray-700 mb-6">

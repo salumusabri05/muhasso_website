@@ -83,15 +83,15 @@ export default function ReligionClubs() {
   ];
 
   return (
-    <main className="min-h-screen flex flex-col">
+    <main className="min-h-screen flex flex-col bg-white animate-fadeIn">
       <Header />
       
       <div className="flex-grow container mx-auto px-6 py-12">
         <div className="max-w-5xl mx-auto">
-          <h1 className="text-3xl md:text-4xl font-bold text-blue-900 mb-8">Religion & Clubs</h1>
+          <h1 className="text-3xl md:text-4xl font-bold text-blue-900 mb-8 animate-slideDown">Religion & Clubs</h1>
           
           {/* Introduction Section */}
-          <div className="bg-blue-50 rounded-xl p-6 mb-12">
+          <div className="bg-blue-50 rounded-xl p-6 mb-12 animate-slideUp">
             <h2 className="text-xl font-semibold text-blue-900 mb-4">Spiritual Life & Student Engagement</h2>
             <p className="text-gray-700 mb-4">
               At MUHAS, we recognize the importance of holistic student development, encompassing spiritual, 
@@ -107,14 +107,15 @@ export default function ReligionClubs() {
           </div>
           
           {/* Religious Groups Section */}
-          <section className="mb-12">
+          <section className="mb-12 animate-slideUp delay-200">
             <h2 className="text-2xl font-bold text-blue-900 mb-6">Religious Organizations</h2>
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {religiousGroups.map((group) => (
+              {religiousGroups.map((group, index) => (
                 <div 
                   key={group.id} 
-                  className={`${group.bgColor} border ${group.borderColor} rounded-xl overflow-hidden h-full`}
+                  className={`${group.bgColor} border ${group.borderColor} rounded-xl overflow-hidden h-full animate-slideInRight`}
+                  style={{ animationDelay: `${(index + 1) * 150}ms` }}
                 >
                   <div className="p-6">
                     <div className="flex items-center mb-4">
@@ -131,7 +132,7 @@ export default function ReligionClubs() {
                     
                     <Link 
                       href={`/religion-clubs/${group.id}`} 
-                      className={`inline-flex items-center ${group.color} font-medium transition-colors hover:underline`}
+                      className={`inline-flex items-center ${group.color} font-medium transition-all hover:underline hover:translate-x-1 transform duration-200`}
                     >
                       View Details
                       <ChevronRight className="w-4 h-4 ml-1" />
@@ -143,14 +144,15 @@ export default function ReligionClubs() {
           </section>
           
           {/* Other Clubs Section */}
-          <section className="mb-12">
+          <section className="mb-12 animate-slideUp delay-300">
             <h2 className="text-2xl font-bold text-blue-900 mb-6">Other Clubs & Activities</h2>
             
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {otherClubs.map((club) => (
+              {otherClubs.map((club, index) => (
                 <div 
                   key={club.id} 
-                  className={`${club.bgColor} border ${club.borderColor} rounded-xl overflow-hidden h-full`}
+                  className={`${club.bgColor} border ${club.borderColor} rounded-xl overflow-hidden h-full animate-slideInRight`}
+                  style={{ animationDelay: `${(index + 5) * 150}ms` }}
                 >
                   <div className="p-6">
                     <div className="flex items-center mb-4">
@@ -164,7 +166,7 @@ export default function ReligionClubs() {
                     
                     <Link 
                       href={`/religion-clubs/${club.id}`} 
-                      className={`inline-flex items-center ${club.color} font-medium transition-colors hover:underline`}
+                      className={`inline-flex items-center ${club.color} font-medium transition-all hover:underline hover:translate-x-1 transform duration-200`}
                     >
                       View Details
                       <ChevronRight className="w-4 h-4 ml-1" />
@@ -176,7 +178,7 @@ export default function ReligionClubs() {
           </section>
           
           {/* Benefits Section */}
-          <section className="mb-12">
+          <section className="mb-12 animate-slideUp delay-400">
             <h2 className="text-2xl font-bold text-blue-900 mb-6">Benefits of Participation</h2>
             
             <div className="bg-white rounded-xl shadow-md p-6">
@@ -237,7 +239,7 @@ export default function ReligionClubs() {
           </section>
           
           {/* How to Join Section */}
-          <section className="bg-blue-50 rounded-xl p-6">
+          <section className="bg-blue-50 rounded-xl p-6 animate-slideUp delay-500">
             <h2 className="text-2xl font-bold text-blue-900 mb-6">How to Join</h2>
             
             <p className="text-gray-700 mb-6">

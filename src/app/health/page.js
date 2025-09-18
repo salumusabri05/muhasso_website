@@ -8,6 +8,11 @@ import { Heart, Calendar, Phone, Clock, MapPin, AlertCircle, Stethoscope, Pill, 
 import Link from 'next/link';
 
 export default function Health() {
+  // Add animation styles
+  React.useEffect(() => {
+    // This empty effect is just to ensure the component re-renders for animations
+  }, []);
+  
   // Mock health services data
   const healthServices = [
     {
@@ -97,15 +102,15 @@ export default function Health() {
   ];
 
   return (
-    <main className="min-h-screen flex flex-col">
+    <main className="min-h-screen flex flex-col bg-white animate-fadeIn">
       <Header />
       
       <div className="flex-grow container mx-auto px-6 py-12">
         <div className="max-w-5xl mx-auto">
-          <h1 className="text-3xl md:text-4xl font-bold text-blue-900 mb-8">Student Health Services</h1>
+          <h1 className="text-3xl md:text-4xl font-bold text-blue-900 mb-8 animate-slideDown">Student Health Services</h1>
           
           {/* Hero Section */}
-          <div className="bg-blue-50 rounded-xl p-6 mb-12 flex flex-col md:flex-row items-center">
+          <div className="bg-blue-50 rounded-xl p-6 mb-12 flex flex-col md:flex-row items-center animate-slideUp">
             <div className="md:w-1/3 mb-6 md:mb-0">
               <div className="relative w-40 h-40 mx-auto">
                 <Image 
@@ -128,7 +133,7 @@ export default function Health() {
           </div>
           
           {/* Emergency Information */}
-          <div className="bg-red-50 border border-red-200 rounded-xl p-6 mb-12">
+          <div className="bg-red-50 border border-red-200 rounded-xl p-6 mb-12 animate-slideUp delay-100">
             <div className="flex items-start">
               <AlertCircle className="w-8 h-8 text-red-600 mr-4 shrink-0" />
               <div>

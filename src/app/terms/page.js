@@ -7,20 +7,25 @@ import { FileText, AlertTriangle, CheckCircle, ShieldAlert } from 'lucide-react'
 import Link from 'next/link';
 
 export default function Terms() {
+  // Add animation styles
+  React.useEffect(() => {
+    // This empty effect is just to ensure the component re-renders for animations
+  }, []);
+  
   // Last updated date
   const lastUpdated = "September 15, 2023";
 
   return (
-    <main className="min-h-screen flex flex-col">
+    <main className="min-h-screen flex flex-col bg-white animate-fadeIn">
       <Header />
       
       <div className="flex-grow container mx-auto px-6 py-12">
         <div className="max-w-4xl mx-auto">
-          <h1 className="text-3xl md:text-4xl font-bold text-blue-900 mb-4">Terms of Service</h1>
+          <h1 className="text-3xl md:text-4xl font-bold text-blue-900 mb-4 animate-slideDown">Terms of Service</h1>
           <p className="text-gray-500 mb-8">Last Updated: {lastUpdated}</p>
           
           {/* Introduction */}
-          <section className="mb-10">
+          <section className="mb-10 animate-slideUp">
             <div className="flex items-start">
               <FileText className="w-6 h-6 text-blue-600 mr-3 mt-1" />
               <div>
@@ -45,7 +50,7 @@ export default function Terms() {
           </section>
           
           {/* Definitions */}
-          <section className="mb-10">
+          <section className="mb-10 animate-slideUp delay-100">
             <div className="flex items-start">
               <FileText className="w-6 h-6 text-blue-600 mr-3 mt-1" />
               <div>
