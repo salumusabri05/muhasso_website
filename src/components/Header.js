@@ -18,7 +18,7 @@ const Header = () => {
     if (path === '/associations') return 'Associations';
     if (path === '/religion-clubs') return 'Religion & Clubs';
     if (path === '/news') return 'News & Events';
-    if (path === '/resources') return 'Resource Center';
+
     if (path === '/contact') return 'Contact & Support';
     if (path.startsWith('/associations/')) return 'Associations'; // For association details pages
     if (path.startsWith('/religion-clubs/')) return 'Religion & Clubs'; // For religion & clubs details pages
@@ -59,7 +59,6 @@ const Header = () => {
       { name: 'Associations', href: '/associations' },
       { name: 'Religion & Clubs', href: '/religion-clubs' },
       { name: 'News & Events', href: '/news' },
-      { name: 'Resource Center', href: '/resources' },
       { name: 'Contact & Support', href: '/contact' },
     ],
     Swahili: [
@@ -67,7 +66,6 @@ const Header = () => {
       { name: 'Vyama', href: '/associations' },
       { name: 'Dini & Vilabu', href: '/religion-clubs' },
       { name: 'Habari na Matukio', href: '/news' },
-      { name: 'Kituo cha Rasilimali', href: '/resources' },
       { name: 'Mawasiliano na Msaada', href: '/contact' },
     ]
   };
