@@ -8,6 +8,7 @@ import PartnersSection from '../components/Partners';
 import UpcomingEventsSection from '../components/Events';
 import LatestNews from '../components/News';
 import AssociationsComponent from '../components/AssociationsComponent';
+import { supabase } from '@/lib/supabase';
 
 
 const HomePage = () => {
@@ -20,6 +21,9 @@ const HomePage = () => {
         <UpcomingEventsSection />
         <LatestNews />
         <PartnersSection />
+        
+        {/* Supabase Example Section */}
+        
       </div>
       
       <Footer />
