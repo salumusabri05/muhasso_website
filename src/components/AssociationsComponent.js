@@ -27,6 +27,50 @@ const AssociationsComponent = () => {
       ]
     },
     {
+      id: 2,
+      name: "TAMELASA",
+      fullName: "Tanzania Medical Laboratory Students Association",
+      description: "Promoting excellence in medical laboratory science through education, research, and professional development for laboratory science students.",
+      type: "National",
+      established: "2010",
+      members: "2,800+",
+      location: "Tanzania",
+      focus: ["Laboratory Science", "Diagnostics", "Research", "Quality Management"],
+      icon: <div className="relative w-8 h-8"><Image src="/asscociation_details/TAMELASA(TANZNAIA MEDCAL LABORATORY STUDENTS ASSOCIATION).jpg" alt="TAMELASA Logo" fill className="object-contain" /></div>,
+      gradient: "from-teal-500 to-emerald-600",
+      bgColor: "bg-teal-50",
+      borderColor: "border-teal-200",
+      textColor: "text-teal-700",
+      activities: [
+        "Laboratory Skills Workshops",
+        "Research Methodology Training",
+        "Annual Laboratory Sciences Conference",
+        "Quality Management Seminars"
+      ]
+    },
+    {
+      id: 3,
+      name: "TAMIRASA",
+      fullName: "Tanzania Medical Imaging Students Association",
+      description: "Dedicated to enhancing knowledge and skills in medical imaging and radiography through educational activities, clinical practice, and professional networking.",
+      type: "National",
+      established: "2012",
+      members: "2,200+",
+      location: "Tanzania",
+      focus: ["Medical Imaging", "Radiography", "Radiation Safety", "Diagnostic Technology"],
+      icon: <div className="relative w-8 h-8"><Image src="/asscociation_details/TAMIRASA(TANZANIA MEDICAL IMAGING STUDENTS ASSOCIATION).jpg" alt="TAMIRASA Logo" fill className="object-contain" /></div>,
+      gradient: "from-indigo-500 to-purple-600",
+      bgColor: "bg-indigo-50",
+      borderColor: "border-indigo-200",
+      textColor: "text-indigo-700",
+      activities: [
+        "Radiographic Positioning Workshops",
+        "Radiation Safety Training",
+        "Advanced Imaging Modalities Seminars",
+        "Annual Medical Imaging Conference"
+      ]
+    },
+    {
       id: 7,
       name: "APSTA",
       fullName: "Association of Physiotherapy Students of Tanzania",
@@ -172,7 +216,7 @@ const AssociationsComponent = () => {
               </div>
 
               {/* Learn More Button */}
-              <Link href={`/associations/details/${association.name.toLowerCase()}`} className={`w-full bg-gradient-to-r ${association.gradient} text-white font-semibold py-3 px-6 rounded-full hover:shadow-lg transition-all duration-200 flex items-center justify-center gap-2 group-hover:scale-105`}>
+              <Link href={`/religion-clubs/${association.name.toLowerCase()}`} className={`w-full bg-gradient-to-r ${association.gradient} text-white font-semibold py-3 px-6 rounded-full hover:shadow-lg transition-all duration-200 flex items-center justify-center gap-2 group-hover:scale-105`}>
                 Learn More
                 <ExternalLink className="w-4 h-4" />
               </Link>
