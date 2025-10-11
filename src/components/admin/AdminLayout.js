@@ -122,13 +122,26 @@ const AdminLayout = ({ children }) => {
   return (
     <div className="min-h-screen flex flex-col bg-gray-50">
       {/* Header */}
-      <header className="bg-white shadow-sm z-20 sticky top-0">
+      <header className="bg-white shadow-sm z-50 sticky top-0">
         <div className="w-full px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between h-16 items-center">
             <div className="flex items-center">
               <button
                 onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-                className="p-2 rounded-md text-gray-600 hover:text-gray-900 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                className="lg:hidden p-2 rounded-md text-gray-600 hover:text-gray-900 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                aria-label="Toggle menu"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  {isSidebarOpen ? (
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                  ) : (
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                  )}
+                </svg>
+              </button>
+              <button
+                onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+                className="hidden lg:block p-2 rounded-md text-gray-600 hover:text-gray-900 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-purple-500"
                 aria-label="Toggle sidebar"
               >
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -162,75 +175,109 @@ const AdminLayout = ({ children }) => {
             </div>
           </div>
         </div>
+
+        {/* Mobile Dropdown Navigation */}
+        <AnimatePresence>
+          {isMobile && isSidebarOpen && (
+            <motion.div
+              initial={{ height: 0, opacity: 0 }}
+              animate={{ height: 'auto', opacity: 1 }}
+              exit={{ height: 0, opacity: 0 }}
+              transition={{ duration: 0.3, ease: 'easeInOut' }}
+              className="lg:hidden border-t border-gray-200 bg-white overflow-hidden"
+            >
+              <nav className="px-2 py-3">
+                <div className="px-3 pb-2">
+                  <p className="text-xs font-medium text-gray-500 uppercase tracking-wider">Navigation</p>
+                </div>
+                <ul className="space-y-1">
+                  {navItems.map((item) => {
+                    const isActive = pathname === item.path;
+                    return (
+                      <li key={item.name}>
+                        <Link
+                          href={item.path}
+                          onClick={() => setIsSidebarOpen(false)}
+                          className={`flex items-center px-3 py-2.5 text-sm font-medium rounded-lg transition-colors ${
+                            isActive
+                              ? 'bg-purple-50 text-purple-700'
+                              : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900'
+                          }`}
+                        >
+                          <svg 
+                            xmlns="http://www.w3.org/2000/svg" 
+                            className={`h-5 w-5 flex-shrink-0 mr-3 ${isActive ? 'text-purple-500' : 'text-gray-500'}`} 
+                            fill="none" 
+                            viewBox="0 0 24 24" 
+                            stroke="currentColor"
+                          >
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={item.icon} />
+                          </svg>
+                          <span>{item.name}</span>
+                        </Link>
+                      </li>
+                    );
+                  })}
+                </ul>
+              </nav>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </header>
       
       <div className="flex flex-1 relative">
-        {/* Mobile Overlay */}
-        {isMobile && isSidebarOpen && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            onClick={() => setIsSidebarOpen(false)}
-            className="fixed inset-0 bg-black bg-opacity-50 z-30 lg:hidden"
-          />
-        )}
-
-        {/* Sidebar */}
-        <motion.nav 
-          className={`bg-white shadow-sm overflow-hidden ${
-            isMobile 
-              ? 'fixed top-16 left-0 bottom-0 w-64 z-40' 
-              : 'relative z-10'
-          }`}
-          variants={isMobile ? sidebarVariants : desktopSidebarVariants}
-          initial={isMobile ? "closed" : "open"}
-          animate={isSidebarOpen ? "open" : "closed"}
-        >
-          <div className="py-4 h-full overflow-y-auto">
-            <div className={`px-4 pb-4 border-b border-gray-200 ${!isMobile && !isSidebarOpen ? 'hidden' : ''}`}>
-              <p className="text-xs font-medium text-gray-500 uppercase">Navigation</p>
-            </div>
-            <ul className="mt-4 space-y-1">
-              {navItems.map((item) => {
-                const isActive = pathname === item.path;
-                return (
-                  <li key={item.name}>
-                    <Link
-                      href={item.path}
-                      onClick={() => isMobile && setIsSidebarOpen(false)}
-                      className={`flex items-center px-4 py-3 text-sm font-medium transition-colors ${
-                        isActive
-                          ? 'bg-purple-50 text-purple-700 border-r-4 border-purple-500'
-                          : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900'
-                      }`}
-                    >
-                      <svg 
-                        xmlns="http://www.w3.org/2000/svg" 
-                        className={`h-5 w-5 flex-shrink-0 ${isActive ? 'text-purple-500' : 'text-gray-500'}`} 
-                        fill="none" 
-                        viewBox="0 0 24 24" 
-                        stroke="currentColor"
+        {/* Desktop Sidebar */}
+        {!isMobile && (
+          <motion.nav 
+            className="bg-white shadow-sm overflow-hidden relative z-10"
+            variants={desktopSidebarVariants}
+            initial="open"
+            animate={isSidebarOpen ? "open" : "closed"}
+          >
+            <div className="py-4 h-full overflow-y-auto">
+              <div className={`px-4 pb-4 border-b border-gray-200 ${!isSidebarOpen ? 'hidden' : ''}`}>
+                <p className="text-xs font-medium text-gray-500 uppercase">Navigation</p>
+              </div>
+              <ul className="mt-4 space-y-1">
+                {navItems.map((item) => {
+                  const isActive = pathname === item.path;
+                  return (
+                    <li key={item.name}>
+                      <Link
+                        href={item.path}
+                        className={`flex items-center px-4 py-3 text-sm font-medium transition-colors ${
+                          isActive
+                            ? 'bg-purple-50 text-purple-700 border-r-4 border-purple-500'
+                            : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900'
+                        }`}
                       >
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={item.icon} />
-                      </svg>
-                      {(isMobile || isSidebarOpen) && (
-                        <motion.span 
-                          className="ml-3"
-                          initial={{ opacity: 0 }}
-                          animate={{ opacity: 1 }}
-                          transition={{ delay: 0.1 }}
+                        <svg 
+                          xmlns="http://www.w3.org/2000/svg" 
+                          className={`h-5 w-5 flex-shrink-0 ${isActive ? 'text-purple-500' : 'text-gray-500'}`} 
+                          fill="none" 
+                          viewBox="0 0 24 24" 
+                          stroke="currentColor"
                         >
-                          {item.name}
-                        </motion.span>
-                      )}
-                    </Link>
-                  </li>
-                );
-              })}
-            </ul>
-          </div>
-        </motion.nav>
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={item.icon} />
+                        </svg>
+                        {isSidebarOpen && (
+                          <motion.span 
+                            className="ml-3"
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            transition={{ delay: 0.1 }}
+                          >
+                            {item.name}
+                          </motion.span>
+                        )}
+                      </Link>
+                    </li>
+                  );
+                })}
+              </ul>
+            </div>
+          </motion.nav>
+        )}
         
         {/* Main Content */}
         <main className="flex-1 overflow-auto">
