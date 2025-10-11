@@ -1,16 +1,17 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Calendar, Users, MapPin, Clock, ArrowRight, Stethoscope, BookOpen, Tag } from 'lucide-react';
+import { Calendar, Users, MapPin, Clock, ArrowRight, Stethoscope, BookOpen, Tag, ChevronLeft, ChevronRight } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
 import Image from 'next/image';
 import Link from 'next/link';
 
-const UpcomingEventsSection = ({ showAll = false, association = null }) => {
+const UpcomingEventsSection = ({ showAll = false, association = null, carousel = false }) => {
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
   const [visibleEvents, setVisibleEvents] = useState(showAll ? 999 : 6);
   const [error, setError] = useState(null);
+  const [currentSlide, setCurrentSlide] = useState(0);
 
   useEffect(() => {
     const fetchEvents = async () => {
@@ -51,6 +52,25 @@ const UpcomingEventsSection = ({ showAll = false, association = null }) => {
 
     fetchEvents();
   }, [association]);
+
+  // Auto-scroll carousel
+  useEffect(() => {
+    if (!carousel || events.length === 0) return;
+    
+    const interval = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % Math.ceil(events.length / 3));
+    }, 5000);
+    
+    return () => clearInterval(interval);
+  }, [carousel, events.length]);
+
+  const nextSlide = () => {
+    setCurrentSlide((prev) => (prev + 1) % Math.ceil(events.length / 3));
+  };
+
+  const prevSlide = () => {
+    setCurrentSlide((prev) => (prev - 1 + Math.ceil(events.length / 3)) % Math.ceil(events.length / 3));
+  };
 
   const getEventTypeColor = (type) => {
     const colors = {
@@ -147,8 +167,154 @@ const UpcomingEventsSection = ({ showAll = false, association = null }) => {
           </div>
         ) : (
           <>
-            {/* Events Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {/* Events Grid or Carousel */}
+            {carousel ? (
+              <div className="relative">
+                {/* Carousel Container */}
+                <div className="overflow-hidden">
+                  <div 
+                    className="flex transition-transform duration-500 ease-in-out"
+                    style={{ transform: `translateX(-${currentSlide * 100}%)` }}
+                  >
+                    {Array.from({ length: Math.ceil(events.length / 3) }).map((_, slideIndex) => (
+                      <div key={slideIndex} className="min-w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 px-2">
+                        {events.slice(slideIndex * 3, (slideIndex + 1) * 3).map((event) => {
+                          const EventIcon = getEventTypeIcon(event.event_type);
+                          
+                          return (
+                            <Link
+                              key={event.id}
+                              href={`/events/${event.id}`}
+                              className="group bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2"
+                            >
+                              {/* Image */}
+                              <div className="relative h-64 overflow-hidden bg-gradient-to-br from-purple-600 to-indigo-600">
+                                {event.featured_image ? (
+                                  <Image
+                                    src={event.featured_image}
+                                    alt={event.title}
+                                    fill
+                                    className="object-cover group-hover:scale-110 transition-transform duration-500"
+                                  />
+                                ) : (
+                                  <div className="absolute inset-0 flex items-center justify-center">
+                                    <EventIcon className="w-24 h-24 text-white opacity-50" />
+                                  </div>
+                                )}
+                                
+                                {/* Category Badge */}
+                                {event.event_type && (
+                                  <div className="absolute top-4 left-4">
+                                    <span className={`inline-flex items-center px-4 py-2 rounded-full text-sm font-semibold backdrop-blur-sm bg-white/90 ${getEventTypeColor(event.event_type)}`}>
+                                      <EventIcon className="w-4 h-4 mr-2" />
+                                      {event.event_type}
+                                    </span>
+                                  </div>
+                                )}
+                                
+                                {/* Status Badge */}
+                                {event.status && (
+                                  <div className="absolute top-4 right-4">
+                                    <span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold backdrop-blur-sm ${
+                                      event.status === 'upcoming' 
+                                        ? 'bg-green-100 text-green-700' 
+                                        : event.status === 'ongoing'
+                                        ? 'bg-blue-100 text-blue-700'
+                                        : 'bg-gray-100 text-gray-700'
+                                    }`}>
+                                      {event.status}
+                                    </span>
+                                  </div>
+                                )}
+                              </div>
+
+                              {/* Content */}
+                              <div className="p-6">
+                                {/* Date & Location */}
+                                <div className="flex items-center gap-4 mb-4 text-sm text-gray-500">
+                                  <div className="flex items-center gap-1">
+                                    <Calendar className="w-4 h-4" />
+                                    <span>{formatDate(event.start_date)}</span>
+                                  </div>
+                                  {event.start_time && (
+                                    <div className="flex items-center gap-1">
+                                      <Clock className="w-4 h-4" />
+                                      <span>{event.start_time.substring(0, 5)}</span>
+                                    </div>
+                                  )}
+                                </div>
+
+                                {event.location && (
+                                  <div className="flex items-center gap-2 mb-4 text-sm text-gray-600">
+                                    <MapPin className="w-4 h-4 flex-shrink-0" />
+                                    <span className="line-clamp-1">{event.location}</span>
+                                  </div>
+                                )}
+
+                                {/* Title */}
+                                <h3 className="text-xl font-bold text-gray-900 mb-3 line-clamp-2 group-hover:text-purple-600 transition-colors duration-300">
+                                  {event.title}
+                                </h3>
+
+                                {/* Description */}
+                                <p className="text-gray-600 text-sm leading-relaxed mb-4 line-clamp-3">
+                                  {event.description}
+                                </p>
+
+                                {/* Read More Button */}
+                                <div className="flex items-center justify-between pt-4 border-t border-gray-100">
+                                  <span className="text-purple-600 font-semibold text-sm group-hover:text-purple-700 transition-colors">
+                                    Learn More
+                                  </span>
+                                  <ArrowRight className="w-5 h-5 text-purple-600 group-hover:translate-x-2 transition-transform duration-300" />
+                                </div>
+                              </div>
+                            </Link>
+                          );
+                        })}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Navigation Buttons */}
+                {events.length > 3 && (
+                  <>
+                    <button
+                      onClick={prevSlide}
+                      className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 bg-white hover:bg-gray-100 p-3 rounded-full shadow-lg transition-all duration-300 hover:scale-110 z-10"
+                      aria-label="Previous slide"
+                    >
+                      <ChevronLeft className="w-6 h-6 text-purple-600" />
+                    </button>
+                    <button
+                      onClick={nextSlide}
+                      className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 bg-white hover:bg-gray-100 p-3 rounded-full shadow-lg transition-all duration-300 hover:scale-110 z-10"
+                      aria-label="Next slide"
+                    >
+                      <ChevronRight className="w-6 h-6 text-purple-600" />
+                    </button>
+                  </>
+                )}
+
+                {/* Dots Indicator */}
+                {events.length > 3 && (
+                  <div className="flex justify-center gap-2 mt-8">
+                    {Array.from({ length: Math.ceil(events.length / 3) }).map((_, index) => (
+                      <button
+                        key={index}
+                        onClick={() => setCurrentSlide(index)}
+                        className={`h-2 rounded-full transition-all duration-300 ${
+                          currentSlide === index ? 'w-8 bg-purple-600' : 'w-2 bg-gray-300 hover:bg-gray-400'
+                        }`}
+                        aria-label={`Go to slide ${index + 1}`}
+                      />
+                    ))}
+                  </div>
+                )}
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {events.slice(0, visibleEvents).map((event) => {
                 const EventIcon = getEventTypeIcon(event.event_type);
                 
@@ -268,9 +434,10 @@ const UpcomingEventsSection = ({ showAll = false, association = null }) => {
                 );
               })}
             </div>
+            )}
 
             {/* Load More Button */}
-            {!showAll && visibleEvents < events.length && (
+            {!carousel && !showAll && visibleEvents < events.length && (
               <div className="text-center mt-12">
                 <button
                   onClick={loadMore}

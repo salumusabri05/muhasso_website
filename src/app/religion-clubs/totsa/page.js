@@ -5,6 +5,9 @@ import Image from 'next/image';
 import { motion } from 'framer-motion';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
+import Events from '@/components/Events';
+import News from '@/components/News';
+import MembershipForm from '@/components/MembershipForm';
 
 // Animation variants
 const fadeIn = (direction, delay) => {
@@ -319,6 +322,26 @@ const TOTSAPage = () => {
           </motion.div>
         );
         
+      case 'membership':
+        return (
+          <motion.div 
+            variants={staggerContainer}
+            initial="hidden"
+            animate="show"
+          >
+            <motion.h3 
+              variants={fadeIn('up', 0.2)}
+              className="text-2xl font-semibold text-blue-800 mb-6"
+            >
+              Join TOTSA
+            </motion.h3>
+            
+            <motion.div variants={fadeIn('up', 0.4)}>
+              <MembershipForm associationName="TOTSA" />
+            </motion.div>
+          </motion.div>
+        );
+        
       default:
         return <div>Content not available</div>;
     }
@@ -328,7 +351,7 @@ const TOTSAPage = () => {
     <div className="bg-white min-h-screen">
       <Header />
       
-      <main className="container mx-auto px-6 py-8">
+      <main className="container mx-auto px-6 py-8 pt-28">
         <motion.div 
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -337,7 +360,7 @@ const TOTSAPage = () => {
         >
           <div className="relative w-40 h-40 mb-6 md:mb-0">
             <Image 
-              src="/asscociation_details/totsa/logo.png" 
+              src="/asscociation_details/TOTSA LOGO(TANZANIA OCCUPATIONAL THERAY STUDENTS ASSOCIATIO).jpg" 
               alt="TOTSA Logo"
               fill
               className="object-contain"
@@ -376,7 +399,7 @@ const TOTSAPage = () => {
         
         <div className="mb-8 border-b">
           <div className="flex overflow-x-auto scrollbar-hide space-x-2">
-            {['overview', 'events', 'leadership', 'calendar'].map((tab) => (
+            {['overview', 'events', 'leadership', 'calendar', 'membership'].map((tab) => (
               <button
                 key={tab}
                 onClick={() => setActiveTab(tab)}

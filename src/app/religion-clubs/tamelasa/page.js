@@ -5,6 +5,9 @@ import Image from 'next/image';
 import { motion } from 'framer-motion';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
+import Events from '@/components/Events';
+import News from '@/components/News';
+import MembershipForm from '@/components/MembershipForm';
 
 // ==========================================
 // Animation Variants
@@ -133,9 +136,9 @@ const TamelasaPage = () => {
             className="space-y-6"
           >
             <motion.div variants={fadeIn('up', 0.2)}>
-              <h3 className="text-2xl font-semibold text-blue-800 mb-3">About APSTA</h3>
+              <h3 className="text-2xl font-semibold text-blue-800 mb-3">About TAMELASA</h3>
               <p className="text-gray-700">
-                The Association of Physiotherapy Students of Tanzania (APSTA) at MUHAS brings together students studying physiotherapy to enhance their academic and professional development. The association focuses on promoting physiotherapy education, research, and community service among its members.
+                The Tanzania Medical Laboratory Students Association (TAMELASA) at MUHAS unites students pursuing medical laboratory sciences to foster academic excellence, professional development, and innovation in laboratory medicine. The association is dedicated to promoting quality laboratory services and advancing the role of medical laboratory scientists in healthcare delivery.
               </p>
             </motion.div>
 
@@ -144,11 +147,11 @@ const TamelasaPage = () => {
               <div className="bg-white p-6 rounded-lg shadow-md border-2 border-blue-200">
                 <div className="mb-4">
                   <h4 className="font-semibold text-blue-700">Vision</h4>
-                  <p className="text-gray-700">To become a leading student organization in promoting excellence in physiotherapy education and practice in Tanzania.</p>
+                  <p className="text-gray-700">To be a leading student organization championing excellence in medical laboratory science education and practice in Tanzania.</p>
                 </div>
                 <div>
                   <h4 className="font-semibold text-blue-700">Mission</h4>
-                  <p className="text-gray-700">To foster academic and professional growth among physiotherapy students through education, research, and community service.</p>
+                  <p className="text-gray-700">To empower medical laboratory students through quality education, research, and professional development opportunities while promoting the critical role of laboratory medicine in healthcare.</p>
                 </div>
               </div>
             </motion.div>
@@ -156,19 +159,19 @@ const TamelasaPage = () => {
             <motion.div variants={fadeIn('up', 0.6)}>
               <h3 className="text-2xl font-semibold text-blue-800 mb-3">Objectives</h3>
               <ul className="list-disc list-inside text-gray-700 space-y-2">
-                <li>Promote academic excellence among physiotherapy students</li>
-                <li>Facilitate research and innovation in physiotherapy</li>
-                <li>Organize workshops and seminars for professional development</li>
-                <li>Advocate for the rights and welfare of physiotherapy students</li>
-                <li>Engage in community service through outreach programs</li>
-                <li>Collaborate with other physiotherapy associations locally and internationally</li>
+                <li>Enhance academic excellence and practical skills in medical laboratory sciences</li>
+                <li>Promote research and innovation in laboratory diagnostics</li>
+                <li>Organize workshops, seminars, and training sessions on emerging laboratory techniques</li>
+                <li>Foster professional networking among students and practicing laboratory scientists</li>
+                <li>Advocate for quality laboratory services and patient safety</li>
+                <li>Engage in community health programs and awareness campaigns</li>
               </ul>
             </motion.div>
 
             <motion.div variants={fadeIn('up', 0.8)}>
               <h3 className="text-2xl font-semibold text-blue-800 mb-3">History</h3>
               <p className="text-gray-700">
-                APSTA was established in 2012 by a group of passionate physiotherapy students who recognized the need for a dedicated platform to address the unique challenges and opportunities in their field. Since then, the association has grown to include all physiotherapy students at MUHAS and has established itself as a vital part of the university&apos;s student community.
+                TAMELASA was founded to represent and support medical laboratory science students at MUHAS. Since its inception, the association has been instrumental in organizing educational events, facilitating internships, and creating platforms for students to engage with industry professionals and contribute to advancing laboratory medicine in Tanzania.
               </p>
             </motion.div>
           </motion.div>
@@ -185,46 +188,11 @@ const TamelasaPage = () => {
               variants={fadeIn('up', 0.2)}
               className="text-2xl font-semibold text-blue-800 mb-6"
             >
-              Upcoming & Past Events
+              TAMELASA Events
             </motion.h3>
             
-            <div className="grid md:grid-cols-2 gap-6">
-              {events.map((event) => (
-                <motion.div 
-                  key={event.id} 
-                  variants={fadeIn('up', 0.3 + event.id * 0.1)}
-                  className="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow border-2 border-blue-200"
-                >
-                  <div className="relative h-48 w-full">
-                    <Image
-                      src={event.image || '/asscociation_details/event-placeholder.jpg'}
-                      alt={event.title}
-                      fill
-                      className="object-cover"
-                    />
-                  </div>
-                  <div className="p-5">
-                    <h4 className="font-semibold text-lg text-blue-800 mb-2">{event.title}</h4>
-                    <div className="text-sm text-blue-600 mb-3">
-                      <time dateTime={event.date}>
-                        {new Date(event.date).toLocaleDateString('en-US', {
-                          year: 'numeric',
-                          month: 'long',
-                          day: 'numeric',
-                        })}
-                      </time>
-                    </div>
-                    <p className="text-gray-700 mb-4">{event.description}</p>
-                    <button className="text-blue-600 hover:text-blue-800 font-medium flex items-center">
-                      Learn more 
-                      <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                      </svg>
-                    </button>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
+            {/* Use real Events component filtered by TAMELASA association */}
+            <Events association="TAMELASA" showAll={true} />
           </motion.div>
         );
         
@@ -336,6 +304,20 @@ const TamelasaPage = () => {
           </motion.div>
         );
         
+      case 'membership':
+        return (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+          >
+            <h3 className="text-2xl font-semibold text-blue-800 mb-6 text-center">
+              Become a Member of TAMELASA
+            </h3>
+            <MembershipForm associationName="TAMELASA" />
+          </motion.div>
+        );
+        
       default:
         return <div>Content not available</div>;
     }
@@ -349,7 +331,7 @@ const TamelasaPage = () => {
     <div className="bg-white min-h-screen">
       <Header />
       
-      <main className="container mx-auto px-6 py-8">
+      <main className="container mx-auto px-6 py-8 pt-28">
         {/* Hero Section */}
         <motion.div 
           initial={{ opacity: 0, y: -20 }}
@@ -359,8 +341,8 @@ const TamelasaPage = () => {
         >
           <div className="relative w-40 h-40 mb-6 md:mb-0">
             <Image 
-              src="/asscociation_details/apsta/logo.png"
-              alt="APSTA Logo"
+              src="/asscociation_details/TAMELASA(TANZNAIA MEDCAL LABORATORY STUDENTS ASSOCIATION).jpg"
+              alt="TAMELASA Logo"
               fill
               className="object-contain"
             />
@@ -373,7 +355,7 @@ const TamelasaPage = () => {
               transition={{ duration: 0.7 }}
               className="text-3xl lg:text-4xl font-bold text-blue-900 mb-3"
             >
-              Association of Physiotherapy Students of Tanzania
+              Tanzania Medical Laboratory Students Association
             </motion.h1>
             
             <motion.p 
@@ -382,7 +364,7 @@ const TamelasaPage = () => {
               transition={{ duration: 0.7, delay: 0.2 }}
               className="text-xl text-blue-700 mb-4"
             >
-              APSTA - MUHAS Chapter
+              TAMELASA - MUHAS Chapter
             </motion.p>
             
             <motion.p 
@@ -391,7 +373,7 @@ const TamelasaPage = () => {
               transition={{ duration: 0.7, delay: 0.3 }}
               className="text-gray-600 max-w-3xl"
             >
-              Uniting physiotherapy students at MUHAS to promote professional excellence, research, and community service in the field of physiotherapy.
+              Uniting medical laboratory science students at MUHAS to promote excellence in laboratory diagnostics, research, and quality healthcare delivery.
             </motion.p>
           </div>
         </motion.div>
@@ -399,7 +381,7 @@ const TamelasaPage = () => {
         {/* Tab Navigation */}
         <div className="mb-8 border-b">
           <div className="flex overflow-x-auto scrollbar-hide space-x-2">
-            {['overview', 'events', 'leadership', 'calendar'].map((tab) => (
+            {['overview', 'events', 'leadership', 'calendar', 'membership'].map((tab) => (
               <button
                 key={tab}
                 onClick={() => setActiveTab(tab)}
@@ -419,6 +401,27 @@ const TamelasaPage = () => {
         <div className="min-h-[400px]">
           {renderTabContent()}
         </div>
+
+        {/* TAMELASA News Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          className="mt-20 mb-12"
+        >
+          <div className="text-center mb-12">
+            <h2 className="text-4xl font-bold text-blue-900 mb-4">
+              TAMELASA News & Updates
+            </h2>
+            <p className="text-gray-600 text-lg max-w-2xl mx-auto">
+              Latest news and announcements from the Medical Laboratory Students Association
+            </p>
+          </div>
+          
+          {/* Use real News component filtered by TAMELASA association */}
+          <News association="TAMELASA" showAll={false} />
+        </motion.div>
       </main>
       
       <Footer />

@@ -7,6 +7,7 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import Events from '@/components/Events';
 import News from '@/components/News';
+import MembershipForm from '@/components/MembershipForm';
 
 // Animation variants
 const fadeIn = (direction, delay) => {
@@ -161,7 +162,7 @@ const TABESAPage = () => {
             <motion.div variants={fadeIn('up', 0.8)}>
               <h3 className="text-2xl font-semibold text-blue-800 mb-3">History</h3>
               <p className="text-gray-700">
-                TABESA was founded in 2015 when the Biomedical Engineering program was established at MUHAS. The association was created to address the unique challenges faced by students in this interdisciplinary field that bridges engineering and healthcare. Since its inception, TABESA has grown significantly and has established partnerships with local hospitals and international engineering societies.
+                TABESA was founded in 2023 when the Biomedical Engineering program was established at MUHAS. The association was created to address the unique challenges faced by students in this interdisciplinary field that bridges engineering and healthcare. Since its inception, TABESA has grown significantly and has established partnerships with local hospitals and international engineering societies.
               </p>
             </motion.div>
           </motion.div>
@@ -294,6 +295,26 @@ const TABESAPage = () => {
           </motion.div>
         );
         
+      case 'membership':
+        return (
+          <motion.div 
+            variants={staggerContainer}
+            initial="hidden"
+            animate="show"
+          >
+            <motion.h3 
+              variants={fadeIn('up', 0.2)}
+              className="text-2xl font-semibold text-blue-800 mb-6"
+            >
+              Join TABESA
+            </motion.h3>
+            
+            <motion.div variants={fadeIn('up', 0.4)}>
+              <MembershipForm associationName="TABESA" />
+            </motion.div>
+          </motion.div>
+        );
+        
       default:
         return <div>Content not available</div>;
     }
@@ -351,7 +372,7 @@ const TABESAPage = () => {
         
         <div className="mb-8 border-b">
           <div className="flex overflow-x-auto scrollbar-hide space-x-2">
-            {['overview', 'events', 'leadership', 'calendar'].map((tab) => (
+            {['overview', 'events', 'leadership', 'calendar', 'membership'].map((tab) => (
               <button
                 key={tab}
                 onClick={() => setActiveTab(tab)}

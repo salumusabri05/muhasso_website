@@ -1,16 +1,17 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Clock, Users, FileText, ChevronDown, ArrowRight, Calendar, Tag } from 'lucide-react';
+import { Clock, Users, FileText, ChevronDown, ArrowRight, Calendar, Tag, ChevronLeft, ChevronRight } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
 import Image from 'next/image';
 import Link from 'next/link';
 
-const LatestNews = ({ showAll = false, association = null }) => {
+const LatestNews = ({ showAll = false, association = null, carousel = false }) => {
   const [newsItems, setNewsItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [visibleCount, setVisibleCount] = useState(showAll ? 999 : 6);
   const [error, setError] = useState(null);
+  const [currentSlide, setCurrentSlide] = useState(0);
 
   useEffect(() => {
     // Gradient options for cards
@@ -71,6 +72,25 @@ const LatestNews = ({ showAll = false, association = null }) => {
 
     fetchNews();
   }, [association]);
+
+  // Auto-scroll carousel for news
+  useEffect(() => {
+    if (!carousel || newsItems.length === 0) return;
+    
+    const interval = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % Math.ceil(newsItems.length / 3));
+    }, 5000);
+    
+    return () => clearInterval(interval);
+  }, [carousel, newsItems.length]);
+
+  const nextSlide = () => {
+    setCurrentSlide((prev) => (prev + 1) % Math.ceil(newsItems.length / 3));
+  };
+
+  const prevSlide = () => {
+    setCurrentSlide((prev) => (prev - 1 + Math.ceil(newsItems.length / 3)) % Math.ceil(newsItems.length / 3));
+  };
 
   const loadMore = () => {
     setVisibleCount(prev => prev + 6);
@@ -142,6 +162,124 @@ const LatestNews = ({ showAll = false, association = null }) => {
           </div>
         ) : (
           <>
+            {carousel ? (
+              <div className="relative mb-12">
+                {/* Carousel Container */}
+                <div className="overflow-hidden">
+                  <div 
+                    className="flex transition-transform duration-500 ease-in-out"
+                    style={{ transform: `translateX(-${currentSlide * 100}%)` }}
+                  >
+                    {Array.from({ length: Math.ceil(newsItems.length / 3) }).map((_, slideIndex) => (
+                      <div key={slideIndex} className="min-w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 px-2">
+                        {newsItems.slice(slideIndex * 3, (slideIndex + 1) * 3).map((item, index) => (
+                          <div 
+                            key={item.id} 
+                            className="group bg-white rounded-3xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2"
+                          >
+                            {/* Image Section */}
+                            <div className="relative h-64 overflow-hidden">
+                              {item.image ? (
+                                <Image
+                                  src={item.image}
+                                  alt={item.title}
+                                  fill
+                                  className="object-cover group-hover:scale-110 transition-transform duration-500"
+                                />
+                              ) : (
+                                <div className={`h-full bg-gradient-to-br ${item.gradient} flex items-center justify-center`}>
+                                  <FileText className="w-16 h-16 text-white opacity-50" />
+                                </div>
+                              )}
+                              
+                              {/* Category Badge */}
+                              <div className="absolute top-4 left-4">
+                                <span className="bg-white/95 backdrop-blur-sm px-4 py-2 rounded-full text-sm font-bold text-gray-900 shadow-lg">
+                                  {item.category}
+                                </span>
+                              </div>
+
+                              {/* Date Badge */}
+                              <div className="absolute top-4 right-4">
+                                <div className="bg-blue-600 text-white p-2 rounded-full shadow-lg">
+                                  <Calendar className="w-5 h-5" />
+                                </div>
+                              </div>
+
+                              {/* Gradient Overlay */}
+                              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                            </div>
+
+                            {/* Content */}
+                            <div className="p-6">
+                              {/* Date */}
+                              <div className="flex items-center gap-2 text-gray-500 text-sm mb-3">
+                                <Clock className="w-4 h-4" />
+                                <span>{formatDate(item.created_at)}</span>
+                              </div>
+
+                              {/* Title */}
+                              <h3 className="font-bold text-gray-900 text-xl mb-3 line-clamp-2 group-hover:text-blue-600 transition-colors duration-300">
+                                {item.title}
+                              </h3>
+
+                              {/* Description */}
+                              <p className="text-gray-600 text-sm leading-relaxed mb-4 line-clamp-3">
+                                {item.description}
+                              </p>
+                              
+                              {/* Read More Button */}
+                              <Link href={`/news/${item.id}`}>
+                                <button className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-semibold py-3 px-6 rounded-full transition-all duration-300 flex items-center justify-center gap-2 group-hover:shadow-lg">
+                                  Read More
+                                  <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                                </button>
+                              </Link>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Navigation Buttons */}
+                {newsItems.length > 3 && (
+                  <>
+                    <button
+                      onClick={prevSlide}
+                      className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 bg-white hover:bg-gray-100 p-3 rounded-full shadow-lg transition-all duration-300 hover:scale-110 z-10"
+                      aria-label="Previous slide"
+                    >
+                      <ChevronLeft className="w-6 h-6 text-blue-600" />
+                    </button>
+                    <button
+                      onClick={nextSlide}
+                      className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 bg-white hover:bg-gray-100 p-3 rounded-full shadow-lg transition-all duration-300 hover:scale-110 z-10"
+                      aria-label="Next slide"
+                    >
+                      <ChevronRight className="w-6 h-6 text-blue-600" />
+                    </button>
+                  </>
+                )}
+
+                {/* Dots Indicator */}
+                {newsItems.length > 3 && (
+                  <div className="flex justify-center gap-2 mt-8">
+                    {Array.from({ length: Math.ceil(newsItems.length / 3) }).map((_, index) => (
+                      <button
+                        key={index}
+                        onClick={() => setCurrentSlide(index)}
+                        className={`h-2 rounded-full transition-all duration-300 ${
+                          currentSlide === index ? 'w-8 bg-blue-600' : 'w-2 bg-gray-300 hover:bg-gray-400'
+                        }`}
+                        aria-label={`Go to slide ${index + 1}`}
+                      />
+                    ))}
+                  </div>
+                )}
+              </div>
+            ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
               {newsItems.slice(0, visibleCount).map((item, index) => (
                 <div 
@@ -225,9 +363,10 @@ const LatestNews = ({ showAll = false, association = null }) => {
                 </div>
               ))}
             </div>
+            )}
 
             {/* Load More Button */}
-            {!showAll && visibleCount < newsItems.length && (
+            {!carousel && !showAll && visibleCount < newsItems.length && (
               <div className="flex justify-center">
                 <button 
                   onClick={loadMore}

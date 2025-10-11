@@ -6,7 +6,7 @@ import Footer from '../components/Footer';
 import HeroSection from '../components/Hero';
 import UpcomingEventsSection from '../components/Events';
 import LatestNews from '../components/News';
-import AssociationsComponent from '../components/AssociationsComponent';
+import FeaturedAssociations from '../components/FeaturedAssociations';
 import { supabase } from '@/lib/supabase';
 
 
@@ -16,9 +16,9 @@ const HomePage = () => {
       <Header />
       <div className="flex-grow">
         <HeroSection />
-        <AssociationsComponent />
-        <UpcomingEventsSection />
-        <LatestNews />
+        <FeaturedAssociations />
+        <UpcomingEventsSection carousel={true} />
+        <LatestNews carousel={true} />
         {/* Supabase Example Section */}
         
       </div>
