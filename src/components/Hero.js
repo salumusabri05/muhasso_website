@@ -1,20 +1,30 @@
+'use client';
+
 import React from 'react';
+import Image from 'next/image';
 import { Users } from 'lucide-react';
 
 const HeroSection = ({ 
   title = "Discover. Connect. Celebrate Student Life at MUHAS.",
   subtitle = "Explore student clubs, join faith groups, and never miss an event.",
-  backgroundImage = "https://images.unsplash.com/photo-1523050854058-8df90110c9d1?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80",
   exploreClubsLink = "/clubs",
   seeEventsLink = "/events"
 }) => {
   return (
-    <section 
-      className="relative min-h-screen w-full bg-cover bg-center bg-no-repeat overflow-hidden animate-fade-in"
-      style={{
-        backgroundImage: `url(${backgroundImage})`
-      }}
-    >
+    <section className="relative min-h-screen w-full overflow-hidden animate-fade-in">
+      {/* Hero Background Image */}
+      <div className="absolute inset-0 w-full h-full">
+        <Image
+          src="/muhasso-hero.png"
+          alt="MUHASSO Hero Background"
+          fill
+          priority
+          className="object-cover object-center"
+          sizes="100vw"
+          quality={90}
+        />
+      </div>
+
       {/* Dark gradient overlay for readability */}
       <div className="absolute inset-0 bg-gradient-to-br from-blue-900/85 via-gray-900/75 to-blue-800/85"></div>
       

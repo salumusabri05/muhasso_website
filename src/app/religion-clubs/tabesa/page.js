@@ -2,9 +2,10 @@
 
 import React, { useState } from 'react';
 import Image from 'next/image';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 // Animation variants
 const fadeIn = (direction, delay) => {
@@ -52,6 +53,28 @@ const staggerContainer = {
 
 const TABESAPage = () => {
   const [activeTab, setActiveTab] = useState('overview');
+  const [currentSlide, setCurrentSlide] = useState(0);
+
+  // Gallery images for carousel
+  const carouselImages = [
+    '/tabesa/As the event drew to a close, participants gathered for group photos and received their Certificate of Recognition for participation from ESUCMA MUHASO and Muhimbili University of Health and Allied Sciences, marking the successful conclusion of the first BME Connect Summit 2025.webp',
+    '/tabesa/As the event drew to a close, participants gathered for group photos and received their Certificate of Recognition for participation from ESUCMA MUHASO and Muhimbili University of Health and Allied Sciences, marking the successful conclusion of the first BME Connect Summit 2025_1.webp',
+    '/tabesa/As the event drew to a close, participants gathered for group photos and received their Certificate of Recognition for participation from ESUCMA MUHASO and Muhimbili University of Health and Allied Sciences, marking the successful conclusion of the first BME Connect Summit 2025_2.webp',
+    '/tabesa/As the event drew to a close, participants gathered for group photos and received their Certificate of Recognition for participation from ESUCMA MUHASO and Muhimbili University of Health and Allied Sciences, marking the successful conclusion of the first BME Connect Summit 2025_3.webp',
+    '/tabesa/🔥 The wait is almost over__The 1st BME Connect Summit 2025 is happening on January 31st, 2025, at Dar es Salaam (MUHASO), Tanzania_ This summit is designed exclusively for Biomedical Engineers and s.jpg',
+  ];
+
+  const nextSlide = () => {
+    setCurrentSlide((prev) => (prev + 1) % carouselImages.length);
+  };
+
+  const prevSlide = () => {
+    setCurrentSlide((prev) => (prev - 1 + carouselImages.length) % carouselImages.length);
+  };
+
+  const goToSlide = (index) => {
+    setCurrentSlide(index);
+  };
 
   // Mock data - replace with actual data later
   const events = [
@@ -371,6 +394,103 @@ const TABESAPage = () => {
             >
               Uniting biomedical engineering students at MUHAS to promote innovation, technical excellence, and the application of engineering solutions to healthcare challenges.
             </motion.p>
+          </div>
+        </motion.div>
+        
+        {/* Image Carousel */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.4 }}
+          className="mb-16 bg-gradient-to-br from-blue-50 to-indigo-50 rounded-3xl overflow-hidden shadow-xl"
+        >
+          <div className="p-6 md:p-8">
+            <h2 className="text-3xl font-bold text-blue-900 mb-6 text-center">
+              Gallery & Events
+            </h2>
+            
+            <div className="relative">
+              {/* Main Carousel */}
+              <div className="relative h-96 md:h-[500px] rounded-2xl overflow-hidden bg-gray-900">
+                <AnimatePresence mode="wait">
+                  <motion.div
+                    key={currentSlide}
+                    initial={{ opacity: 0, x: 100 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: -100 }}
+                    transition={{ duration: 0.5 }}
+                    className="relative w-full h-full"
+                  >
+                    <Image
+                      src={carouselImages[currentSlide]}
+                      alt={`TABESA Event ${currentSlide + 1}`}
+                      fill
+                      className="object-contain"
+                      priority={currentSlide === 0}
+                    />
+                  </motion.div>
+                </AnimatePresence>
+
+                {/* Navigation Arrows */}
+                <button
+                  onClick={prevSlide}
+                  className="absolute left-4 top-1/2 -translate-y-1/2 p-3 bg-white/90 hover:bg-white rounded-full shadow-lg transition-all duration-300 hover:scale-110 z-10"
+                  aria-label="Previous image"
+                >
+                  <ChevronLeft className="w-6 h-6 text-blue-900" />
+                </button>
+                <button
+                  onClick={nextSlide}
+                  className="absolute right-4 top-1/2 -translate-y-1/2 p-3 bg-white/90 hover:bg-white rounded-full shadow-lg transition-all duration-300 hover:scale-110 z-10"
+                  aria-label="Next image"
+                >
+                  <ChevronRight className="w-6 h-6 text-blue-900" />
+                </button>
+
+                {/* Slide Counter */}
+                <div className="absolute bottom-4 right-4 px-4 py-2 bg-black/70 text-white rounded-full text-sm font-medium z-10">
+                  {currentSlide + 1} / {carouselImages.length}
+                </div>
+              </div>
+
+              {/* Thumbnail Navigation */}
+              <div className="flex gap-3 mt-6 overflow-x-auto pb-2">
+                {carouselImages.map((image, index) => (
+                  <button
+                    key={index}
+                    onClick={() => goToSlide(index)}
+                    className={`relative flex-shrink-0 w-24 h-24 rounded-xl overflow-hidden transition-all duration-300 ${
+                      currentSlide === index
+                        ? 'ring-4 ring-blue-600 scale-105'
+                        : 'opacity-60 hover:opacity-100'
+                    }`}
+                  >
+                    <Image
+                      src={image}
+                      alt={`Thumbnail ${index + 1}`}
+                      fill
+                      className="object-cover"
+                    />
+                  </button>
+                ))}
+              </div>
+
+              {/* Auto-play Indicator */}
+              <div className="flex justify-center gap-2 mt-4">
+                {carouselImages.map((_, index) => (
+                  <button
+                    key={index}
+                    onClick={() => goToSlide(index)}
+                    className={`h-2 rounded-full transition-all duration-300 ${
+                      currentSlide === index
+                        ? 'w-8 bg-blue-600'
+                        : 'w-2 bg-blue-300 hover:bg-blue-400'
+                    }`}
+                    aria-label={`Go to slide ${index + 1}`}
+                  />
+                ))}
+              </div>
+            </div>
           </div>
         </motion.div>
         

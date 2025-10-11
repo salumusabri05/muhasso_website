@@ -3,20 +3,25 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
+import { supabase } from '@/lib/supabase';
 
 const NewsForm = () => {
   const [formData, setFormData] = useState({
     title: '',
-    date: '',
+    category: 'General',
+    excerpt: '',
     content: '',
     author: '',
     tags: '',
-    featuredImage: null
+    featuredImage: null,
+    published: false
   });
   
   const [imagePreview, setImagePreview] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showToast, setShowToast] = useState(false);
+  const [toastMessage, setToastMessage] = useState('');
+  const [toastType, setToastType] = useState('success');
   
   // Handle form input changes
   const handleInputChange = (e) => {
@@ -38,33 +43,101 @@ const NewsForm = () => {
   };
   
   // Handle form submission
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
     
-    // Create FormData for file upload
-    const submissionData = new FormData();
-    for (const key in formData) {
-      if (key === 'featuredImage' && formData[key]) {
-        submissionData.append(key, formData[key]);
-      } else {
-        submissionData.append(key, formData[key]);
+    try {
+      let featuredImageUrl = null;
+      
+      // Upload image to Supabase Storage if provided
+      if (formData.featuredImage) {
+        const fileExt = formData.featuredImage.name.split('.').pop();
+        const fileName = `${Math.random().toString(36).substring(2)}-${Date.now()}.${fileExt}`;
+        const filePath = `${fileName}`;
+        
+        const { data: uploadData, error: uploadError } = await supabase.storage
+          .from('news-images')
+          .upload(filePath, formData.featuredImage);
+        
+        if (uploadError) {
+          throw new Error(`Image upload failed: ${uploadError.message}`);
+        }
+        
+        // Get public URL
+        const { data: { publicUrl } } = supabase.storage
+          .from('news-images')
+          .getPublicUrl(filePath);
+        
+        featuredImageUrl = publicUrl;
       }
-    }
-    
-    // Log form data to console (for now)
-    console.log('News Form Submission:', formData);
-    
-    // Simulate API call with timeout
-    setTimeout(() => {
-      setIsSubmitting(false);
+      
+      // Process tags - convert comma-separated string to array
+      const tagsArray = formData.tags 
+        ? formData.tags.split(',').map(tag => tag.trim()).filter(tag => tag)
+        : [];
+      
+      // Get current user
+      const { data: { user } } = await supabase.auth.getUser();
+      
+      // Insert news data into Supabase
+      const { data, error } = await supabase
+        .from('news')
+        .insert([
+          {
+            title: formData.title,
+            category: formData.category,
+            excerpt: formData.excerpt,
+            content: formData.content,
+            author: formData.author,
+            featured_image: featuredImageUrl,
+            tags: tagsArray,
+            published: formData.published,
+            created_by: user?.id || null,
+            updated_by: user?.id || null
+          }
+        ])
+        .select();
+      
+      if (error) {
+        throw new Error(`Database error: ${error.message}`);
+      }
+      
+      // Success!
+      setToastType('success');
+      setToastMessage('✅ News article created successfully!');
       setShowToast(true);
+      
+      // Reset form
+      setFormData({
+        title: '',
+        category: 'General',
+        excerpt: '',
+        content: '',
+        author: '',
+        tags: '',
+        featuredImage: null,
+        published: false
+      });
+      setImagePreview(null);
       
       // Hide toast after 3 seconds
       setTimeout(() => {
         setShowToast(false);
       }, 3000);
-    }, 1000);
+      
+    } catch (error) {
+      console.error('Error submitting news:', error);
+      setToastType('error');
+      setToastMessage(`❌ Error: ${error.message}`);
+      setShowToast(true);
+      
+      setTimeout(() => {
+        setShowToast(false);
+      }, 5000);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   // Animation variants
@@ -120,19 +193,39 @@ const NewsForm = () => {
           />
         </motion.div>
         
-        {/* Date */}
+        {/* Category */}
         <motion.div className="mb-5" variants={itemVariants}>
-          <label htmlFor="date" className="block text-sm font-medium text-gray-700 mb-1">
-            Publication Date *
+          <label htmlFor="category" className="block text-sm font-medium text-gray-700 mb-1">
+            Category *
           </label>
-          <input
-            type="date"
-            id="date"
-            name="date"
+          <select
+            id="category"
+            name="category"
             required
-            value={formData.date}
+            value={formData.category}
             onChange={handleInputChange}
             className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 text-black"
+          >
+            <option value="Academic">Academic</option>
+            <option value="Sports">Sports</option>
+            <option value="Cultural">Cultural</option>
+            <option value="General">General</option>
+          </select>
+        </motion.div>
+        
+        {/* Excerpt */}
+        <motion.div className="mb-5" variants={itemVariants}>
+          <label htmlFor="excerpt" className="block text-sm font-medium text-gray-700 mb-1">
+            Excerpt (Short Summary)
+          </label>
+          <textarea
+            id="excerpt"
+            name="excerpt"
+            value={formData.excerpt}
+            onChange={handleInputChange}
+            rows={2}
+            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 text-black"
+            placeholder="Brief summary of the news (optional)"
           />
         </motion.div>
         
@@ -242,7 +335,22 @@ const NewsForm = () => {
         </motion.div>
         
         {/* Submit Button */}
-        <motion.div variants={itemVariants}>
+        <motion.div className="space-y-3" variants={itemVariants}>
+          {/* Publish checkbox */}
+          <div className="flex items-center">
+            <input
+              type="checkbox"
+              id="published"
+              name="published"
+              checked={formData.published}
+              onChange={(e) => setFormData({...formData, published: e.target.checked})}
+              className="h-4 w-4 text-purple-600 focus:ring-purple-500 border-gray-300 rounded"
+            />
+            <label htmlFor="published" className="ml-2 block text-sm text-gray-700">
+              Publish immediately (uncheck to save as draft)
+            </label>
+          </div>
+          
           <button
             type="submit"
             disabled={isSubmitting}
@@ -257,7 +365,7 @@ const NewsForm = () => {
                 Submitting...
               </div>
             ) : (
-              'Publish News'
+              formData.published ? 'Publish News' : 'Save as Draft'
             )}
           </button>
         </motion.div>
@@ -269,12 +377,16 @@ const NewsForm = () => {
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -20 }}
-          className="fixed top-4 right-4 bg-green-600 text-white px-6 py-3 rounded-lg shadow-lg flex items-center"
+          className={`fixed top-4 right-4 ${toastType === 'success' ? 'bg-green-600' : 'bg-red-600'} text-white px-6 py-3 rounded-lg shadow-lg flex items-center z-50`}
         >
           <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
-            <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+            {toastType === 'success' ? (
+              <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+            ) : (
+              <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
+            )}
           </svg>
-          <span>✅ News article submitted!</span>
+          <span>{toastMessage}</span>
         </motion.div>
       )}
     </>

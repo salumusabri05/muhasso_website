@@ -12,8 +12,13 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata = {
-  title: "muhasso - Muhimbili University Students' Organization",
-  description: "muhasso - Muhimbili University Students' Organization",
+  title: "MUHASSO - Muhimbili University Students' Organization",
+  description: "MUHASSO - Muhimbili University Students' Organization",
+  icons: {
+    icon: '/asscociation_details/muhasso_logo.png',
+    shortcut: '/asscociation_details/muhasso_logo.png',
+    apple: '/asscociation_details/muhasso_logo.png',
+  },
 };
 
 export default function RootLayout({ children }) {

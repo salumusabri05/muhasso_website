@@ -10,9 +10,26 @@ import Image from 'next/image';
 const AdminLayout = ({ children }) => {
   const pathname = usePathname();
   const router = useRouter();
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false); // Default closed on mobile
   const [isLoading, setIsLoading] = useState(true);
   const [userName, setUserName] = useState('Admin');
+  const [isMobile, setIsMobile] = useState(false);
+
+  // Detect mobile screen size
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 1024);
+      if (window.innerWidth >= 1024) {
+        setIsSidebarOpen(true); // Open sidebar on desktop
+      } else {
+        setIsSidebarOpen(false); // Close sidebar on mobile
+      }
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   useEffect(() => {
     const checkSession = async () => {
@@ -65,6 +82,17 @@ const AdminLayout = ({ children }) => {
 
   const sidebarVariants = {
     open: {
+      x: 0,
+      transition: { duration: 0.3, ease: "easeOut" }
+    },
+    closed: {
+      x: '-100%',
+      transition: { duration: 0.3, ease: "easeIn" }
+    }
+  };
+
+  const desktopSidebarVariants = {
+    open: {
       width: '16rem',
       transition: { duration: 0.3 }
     },
@@ -94,19 +122,20 @@ const AdminLayout = ({ children }) => {
   return (
     <div className="min-h-screen flex flex-col bg-gray-50">
       {/* Header */}
-      <header className="bg-white shadow-sm z-10">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <header className="bg-white shadow-sm z-20 sticky top-0">
+        <div className="w-full px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between h-16 items-center">
             <div className="flex items-center">
               <button
                 onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-                className="p-2 rounded-md text-gray-600 hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                className="p-2 rounded-md text-gray-600 hover:text-gray-900 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                aria-label="Toggle sidebar"
               >
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
                 </svg>
               </button>
-              <div className="flex items-center ml-4">
+              <div className="flex items-center ml-2 sm:ml-4">
                 <Image 
                   src="/asscociation_details/muhasso_logo.png" 
                   alt="MUHASSO Logo" 
@@ -114,35 +143,52 @@ const AdminLayout = ({ children }) => {
                   height={32} 
                   className="object-contain"
                 />
-                <h1 className="ml-3 text-xl font-semibold text-gray-800">MUHASSO Admin</h1>
+                <h1 className="ml-2 sm:ml-3 text-lg sm:text-xl font-semibold text-gray-800 hidden sm:block">MUHASSO Admin</h1>
+                <h1 className="ml-2 text-base font-semibold text-gray-800 sm:hidden">Admin</h1>
               </div>
             </div>
             
-            <div className="flex items-center">
-              <span className="text-gray-600 mr-4">Welcome, {userName}</span>
+            <div className="flex items-center gap-2 sm:gap-4">
+              <span className="text-gray-600 text-xs sm:text-sm hidden md:inline">Welcome, {userName}</span>
               <button
                 onClick={handleLogout}
-                className="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-white bg-gradient-to-r from-purple-600 to-purple-800 hover:from-purple-700 hover:to-purple-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500"
+                className="inline-flex items-center px-2 sm:px-3 py-2 border border-transparent text-xs sm:text-sm leading-4 font-medium rounded-md text-white bg-gradient-to-r from-purple-600 to-purple-800 hover:from-purple-700 hover:to-purple-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500"
               >
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 sm:mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
                 </svg>
-                Logout
+                <span className="hidden sm:inline">Logout</span>
               </button>
             </div>
           </div>
         </div>
       </header>
       
-      <div className="flex flex-1">
+      <div className="flex flex-1 relative">
+        {/* Mobile Overlay */}
+        {isMobile && isSidebarOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setIsSidebarOpen(false)}
+            className="fixed inset-0 bg-black bg-opacity-50 z-30 lg:hidden"
+          />
+        )}
+
         {/* Sidebar */}
         <motion.nav 
-          className="bg-white shadow-sm z-10 overflow-hidden"
-          variants={sidebarVariants}
+          className={`bg-white shadow-sm overflow-hidden ${
+            isMobile 
+              ? 'fixed top-16 left-0 bottom-0 w-64 z-40' 
+              : 'relative z-10'
+          }`}
+          variants={isMobile ? sidebarVariants : desktopSidebarVariants}
+          initial={isMobile ? "closed" : "open"}
           animate={isSidebarOpen ? "open" : "closed"}
         >
-          <div className="py-4">
-            <div className="px-4 pb-4 border-b border-gray-200">
+          <div className="py-4 h-full overflow-y-auto">
+            <div className={`px-4 pb-4 border-b border-gray-200 ${!isMobile && !isSidebarOpen ? 'hidden' : ''}`}>
               <p className="text-xs font-medium text-gray-500 uppercase">Navigation</p>
             </div>
             <ul className="mt-4 space-y-1">
@@ -152,6 +198,7 @@ const AdminLayout = ({ children }) => {
                   <li key={item.name}>
                     <Link
                       href={item.path}
+                      onClick={() => isMobile && setIsSidebarOpen(false)}
                       className={`flex items-center px-4 py-3 text-sm font-medium transition-colors ${
                         isActive
                           ? 'bg-purple-50 text-purple-700 border-r-4 border-purple-500'
@@ -160,16 +207,23 @@ const AdminLayout = ({ children }) => {
                     >
                       <svg 
                         xmlns="http://www.w3.org/2000/svg" 
-                        className={`h-5 w-5 ${isActive ? 'text-purple-500' : 'text-gray-500'}`} 
+                        className={`h-5 w-5 flex-shrink-0 ${isActive ? 'text-purple-500' : 'text-gray-500'}`} 
                         fill="none" 
                         viewBox="0 0 24 24" 
                         stroke="currentColor"
                       >
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={item.icon} />
                       </svg>
-                      <motion.span className="ml-3" variants={textVariants}>
-                        {item.name}
-                      </motion.span>
+                      {(isMobile || isSidebarOpen) && (
+                        <motion.span 
+                          className="ml-3"
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                          transition={{ delay: 0.1 }}
+                        >
+                          {item.name}
+                        </motion.span>
+                      )}
                     </Link>
                   </li>
                 );
@@ -180,7 +234,7 @@ const AdminLayout = ({ children }) => {
         
         {/* Main Content */}
         <main className="flex-1 overflow-auto">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+          <div className="w-full px-4 sm:px-6 lg:px-8 py-4 sm:py-6">
             <AnimatePresence mode="wait">
               <motion.div
                 key={pathname}
@@ -197,10 +251,10 @@ const AdminLayout = ({ children }) => {
       </div>
       
       {/* Footer */}
-      <footer className="bg-white shadow-sm py-4 mt-auto">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <p className="text-center text-sm text-gray-500">
-            &copy; {new Date().getFullYear()} MUHASSO. All rights reserved. Admin Portal.
+      <footer className="bg-white shadow-sm py-3 sm:py-4 mt-auto">
+        <div className="w-full px-4 sm:px-6 lg:px-8">
+          <p className="text-center text-xs sm:text-sm text-gray-500">
+            &copy; {new Date().getFullYear()} MUHASSO. All rights reserved.
           </p>
         </div>
       </footer>
