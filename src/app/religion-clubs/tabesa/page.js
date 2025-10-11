@@ -5,6 +5,8 @@ import Image from 'next/image';
 import { motion } from 'framer-motion';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
+import Events from '@/components/Events';
+import News from '@/components/News';
 
 // Animation variants
 const fadeIn = (direction, delay) => {
@@ -176,46 +178,11 @@ const TABESAPage = () => {
               variants={fadeIn('up', 0.2)}
               className="text-2xl font-semibold text-blue-800 mb-6"
             >
-              Upcoming & Past Events
+              TABESA Events
             </motion.h3>
             
-            <div className="grid md:grid-cols-2 gap-6">
-              {events.map((event) => (
-                <motion.div 
-                  key={event.id} 
-                  variants={fadeIn('up', 0.3 + event.id * 0.1)}
-                  className="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow border-2 border-blue-200"
-                >
-                  <div className="relative h-48 w-full">
-                    <Image
-                      src={event.image || '/asscociation_details/event-placeholder.jpg'}
-                      alt={event.title}
-                      fill
-                      className="object-cover"
-                    />
-                  </div>
-                  <div className="p-5">
-                    <h4 className="font-semibold text-lg text-blue-800 mb-2">{event.title}</h4>
-                    <div className="text-sm text-blue-600 mb-3">
-                      <time dateTime={event.date}>
-                        {new Date(event.date).toLocaleDateString('en-US', {
-                          year: 'numeric',
-                          month: 'long',
-                          day: 'numeric',
-                        })}
-                      </time>
-                    </div>
-                    <p className="text-gray-700 mb-4">{event.description}</p>
-                    <button className="text-blue-600 hover:text-blue-800 font-medium flex items-center">
-                      Learn more 
-                      <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                      </svg>
-                    </button>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
+            {/* Use real Events component filtered by TABESA association */}
+            <Events association="TABESA" showAll={true} />
           </motion.div>
         );
         
@@ -403,6 +370,27 @@ const TABESAPage = () => {
         <div className="min-h-[400px]">
           {renderTabContent()}
         </div>
+
+        {/* TABESA News Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          className="mt-20 mb-12"
+        >
+          <div className="text-center mb-12">
+            <h2 className="text-4xl font-bold text-blue-900 mb-4">
+              TABESA News & Updates
+            </h2>
+            <p className="text-gray-600 text-lg max-w-2xl mx-auto">
+              Latest news and announcements from the Biomedical Engineering Students Association
+            </p>
+          </div>
+          
+          {/* Use real News component filtered by TABESA association */}
+          <News association="TABESA" showAll={false} />
+        </motion.div>
 
         {/* Image Gallery Section - Before Footer */}
         <motion.div

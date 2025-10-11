@@ -12,6 +12,7 @@ const NewsForm = () => {
     excerpt: '',
     content: '',
     author: '',
+    association: '',
     tags: '',
     featuredImage: null,
     published: false
@@ -90,6 +91,7 @@ const NewsForm = () => {
             excerpt: formData.excerpt,
             content: formData.content,
             author: formData.author,
+            association: formData.association || null,
             featured_image: featuredImageUrl,
             tags: tagsArray,
             published: formData.published,
@@ -115,6 +117,7 @@ const NewsForm = () => {
         excerpt: '',
         content: '',
         author: '',
+        association: '',
         tags: '',
         featuredImage: null,
         published: false
@@ -261,6 +264,33 @@ const NewsForm = () => {
             className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 text-black"
             placeholder="Enter author name"
           />
+        </motion.div>
+
+        {/* Association */}
+        <motion.div className="mb-5" variants={itemVariants}>
+          <label htmlFor="association" className="block text-sm font-medium text-gray-700 mb-1">
+            Association <span className="text-gray-400">(Optional)</span>
+          </label>
+          <select
+            id="association"
+            name="association"
+            value={formData.association}
+            onChange={handleInputChange}
+            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 text-black"
+          >
+            <option value="">-- Select Association --</option>
+            <option value="MUHASSO">MUHASSO</option>
+            <option value="TABESA">TABESA</option>
+            <option value="TAMELASA">TAMELASA</option>
+            <option value="TAPHSA">TAPHSA</option>
+            <option value="TANMSA">TANMSA</option>
+            <option value="TAMSA">TAMSA</option>
+            <option value="TANDSA">TANDSA</option>
+            <option value="TANSA">TANSA</option>
+            <option value="Book Club">Book Club</option>
+            <option value="Big Future Club">Big Future Club</option>
+          </select>
+          <p className="text-xs text-gray-500 mt-1">Select which association this news belongs to</p>
         </motion.div>
         
         {/* Tags */}

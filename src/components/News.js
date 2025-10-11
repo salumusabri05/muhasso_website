@@ -6,10 +6,10 @@ import { supabase } from '@/lib/supabase';
 import Image from 'next/image';
 import Link from 'next/link';
 
-const LatestNews = () => {
+const LatestNews = ({ showAll = false, association = null }) => {
   const [newsItems, setNewsItems] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [visibleCount, setVisibleCount] = useState(6);
+  const [visibleCount, setVisibleCount] = useState(showAll ? 999 : 6);
   const [error, setError] = useState(null);
 
   useEffect(() => {
@@ -27,11 +27,18 @@ const LatestNews = () => {
       try {
         setLoading(true);
         setError(null);
-        const { data, error } = await supabase
+        
+        let query = supabase
           .from('news')
           .select('*')
-          .eq('published', true)
-          .order('created_at', { ascending: false });
+          .eq('published', true);
+        
+        // Filter by association if provided
+        if (association) {
+          query = query.eq('association', association);
+        }
+        
+        const { data, error } = await query.order('created_at', { ascending: false });
 
         if (error) {
           console.error('Error fetching news:', error);
@@ -63,7 +70,7 @@ const LatestNews = () => {
     };
 
     fetchNews();
-  }, []);
+  }, [association]);
 
   const loadMore = () => {
     setVisibleCount(prev => prev + 6);
@@ -220,7 +227,7 @@ const LatestNews = () => {
             </div>
 
             {/* Load More Button */}
-            {visibleCount < newsItems.length && (
+            {!showAll && visibleCount < newsItems.length && (
               <div className="flex justify-center">
                 <button 
                   onClick={loadMore}

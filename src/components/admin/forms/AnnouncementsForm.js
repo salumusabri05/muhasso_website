@@ -11,6 +11,7 @@ const AnnouncementsForm = () => {
     priority: 'medium',
     category: 'General',
     target_audience: 'All',
+    association: '',
     expiry_date: '',
     is_pinned: false,
     attachments: [],
@@ -96,6 +97,7 @@ const AnnouncementsForm = () => {
             priority: formData.priority,
             category: formData.category,
             target_audience: formData.target_audience,
+            association: formData.association || null,
             expiry_date: formData.expiry_date || null,
             is_active: formData.is_active,
             is_pinned: formData.is_pinned,
@@ -122,6 +124,7 @@ const AnnouncementsForm = () => {
         priority: 'medium',
         category: 'General',
         target_audience: 'All',
+        association: '',
         expiry_date: '',
         is_pinned: false,
         attachments: [],
@@ -281,6 +284,33 @@ const AnnouncementsForm = () => {
             <option value="Staff">Staff</option>
             <option value="Alumni">Alumni</option>
           </select>
+        </motion.div>
+
+        {/* Association */}
+        <motion.div className="mb-5" variants={itemVariants}>
+          <label htmlFor="association" className="block text-sm font-medium text-gray-700 mb-1">
+            Association (Optional)
+          </label>
+          <select
+            id="association"
+            name="association"
+            value={formData.association}
+            onChange={handleInputChange}
+            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 text-black"
+          >
+            <option value="">-- Select Association --</option>
+            <option value="MUHASSO">MUHASSO</option>
+            <option value="TABESA">TABESA</option>
+            <option value="TAMELASA">TAMELASA</option>
+            <option value="TAPHSA">TAPHSA</option>
+            <option value="TANMSA">TANMSA</option>
+            <option value="TAMSA">TAMSA</option>
+            <option value="TANDSA">TANDSA</option>
+            <option value="TANSA">TANSA</option>
+            <option value="Book Club">Book Club</option>
+            <option value="Big Future Club">Big Future Club</option>
+          </select>
+          <p className="mt-1 text-xs text-gray-500">Select which association this announcement belongs to</p>
         </motion.div>
 
         {/* Expiry Date */}

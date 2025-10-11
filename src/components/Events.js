@@ -6,44 +6,51 @@ import { supabase } from '@/lib/supabase';
 import Image from 'next/image';
 import Link from 'next/link';
 
-const UpcomingEventsSection = ({ showAll = false }) => {
+const UpcomingEventsSection = ({ showAll = false, association = null }) => {
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
   const [visibleEvents, setVisibleEvents] = useState(showAll ? 999 : 6);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    fetchEvents();
-  }, []);
+    const fetchEvents = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+        
+        let query = supabase
+          .from('events')
+          .select('*')
+          .eq('published', true);
+        
+        // Filter by association if provided
+        if (association) {
+          query = query.eq('association', association);
+        }
+        
+        const { data, error } = await query.order('start_date', { ascending: true });
 
-  const fetchEvents = async () => {
-    try {
-      setLoading(true);
-      setError(null);
-      const { data, error } = await supabase
-        .from('events')
-        .select('*')
-        .eq('published', true)
-        .order('start_date', { ascending: true });
-
-      if (error) {
+        if (error) {
+          console.error('Error fetching events:', error);
+          setError(error.message || 'Failed to fetch events');
+          // Set empty array on error so component still renders
+          setEvents([]);
+          return;
+        }
+        
+        setEvents(data || []);
+      } catch (error) {
         console.error('Error fetching events:', error);
-        setError(error.message || 'Failed to fetch events');
+        setError(error.message || 'Failed to connect to database');
         // Set empty array on error so component still renders
         setEvents([]);
-        return;
+      } finally {
+        setLoading(false);
       }
-      
-      setEvents(data || []);
-    } catch (error) {
-      console.error('Error fetching events:', error);
-      setError(error.message || 'Failed to connect to database');
-      // Set empty array on error so component still renders
-      setEvents([]);
-    } finally {
-      setLoading(false);
-    }
-  };
+    };
+
+    fetchEvents();
+  }, [association]);
 
   const getEventTypeColor = (type) => {
     const colors = {
