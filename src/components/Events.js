@@ -6,10 +6,10 @@ import { supabase } from '@/lib/supabase';
 import Image from 'next/image';
 import Link from 'next/link';
 
-const UpcomingEventsSection = () => {
+const UpcomingEventsSection = ({ showAll = false }) => {
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [visibleEvents, setVisibleEvents] = useState(6);
+  const [visibleEvents, setVisibleEvents] = useState(showAll ? 999 : 6);
   const [error, setError] = useState(null);
 
   useEffect(() => {
@@ -263,7 +263,7 @@ const UpcomingEventsSection = () => {
             </div>
 
             {/* Load More Button */}
-            {visibleEvents < events.length && (
+            {!showAll && visibleEvents < events.length && (
               <div className="text-center mt-12">
                 <button
                   onClick={loadMore}

@@ -2,10 +2,9 @@
 
 import React, { useState } from 'react';
 import Image from 'next/image';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 // Animation variants
 const fadeIn = (direction, delay) => {
@@ -53,28 +52,14 @@ const staggerContainer = {
 
 const TABESAPage = () => {
   const [activeTab, setActiveTab] = useState('overview');
-  const [currentSlide, setCurrentSlide] = useState(0);
 
-  // Gallery images for carousel
+  // Gallery images
   const carouselImages = [
-    '/tabesa/As the event drew to a close, participants gathered for group photos and received their Certificate of Recognition for participation from ESUCMA MUHASO and Muhimbili University of Health and Allied Sciences, marking the successful conclusion of the first BME Connect Summit 2025.webp',
-    '/tabesa/As the event drew to a close, participants gathered for group photos and received their Certificate of Recognition for participation from ESUCMA MUHASO and Muhimbili University of Health and Allied Sciences, marking the successful conclusion of the first BME Connect Summit 2025_1.webp',
-    '/tabesa/As the event drew to a close, participants gathered for group photos and received their Certificate of Recognition for participation from ESUCMA MUHASO and Muhimbili University of Health and Allied Sciences, marking the successful conclusion of the first BME Connect Summit 2025_2.webp',
-    '/tabesa/As the event drew to a close, participants gathered for group photos and received their Certificate of Recognition for participation from ESUCMA MUHASO and Muhimbili University of Health and Allied Sciences, marking the successful conclusion of the first BME Connect Summit 2025_3.webp',
-    '/tabesa/🔥 The wait is almost over__The 1st BME Connect Summit 2025 is happening on January 31st, 2025, at Dar es Salaam (MUHASO), Tanzania_ This summit is designed exclusively for Biomedical Engineers and s.jpg',
+    '/tabesa/1.jpg',
+    '/tabesa/2.webp',
+    '/tabesa/3.webp',
+    '/tabesa/4.webp',
   ];
-
-  const nextSlide = () => {
-    setCurrentSlide((prev) => (prev + 1) % carouselImages.length);
-  };
-
-  const prevSlide = () => {
-    setCurrentSlide((prev) => (prev - 1 + carouselImages.length) % carouselImages.length);
-  };
-
-  const goToSlide = (index) => {
-    setCurrentSlide(index);
-  };
 
   // Mock data - replace with actual data later
   const events = [
@@ -351,7 +336,7 @@ const TABESAPage = () => {
     <div className="bg-white min-h-screen">
       <Header />
       
-      <main className="container mx-auto px-6 py-8">
+      <main className="container mx-auto px-6 py-8 pt-28">
         <motion.div 
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -360,7 +345,7 @@ const TABESAPage = () => {
         >
           <div className="relative w-40 h-40 mb-6 md:mb-0">
             <Image 
-              src="/asscociation_details/tabesa/logo.png" 
+              src="/asscociation_details/tabesa-logo.png" 
               alt="TABESA Logo"
               fill
               className="object-contain"
@@ -397,103 +382,6 @@ const TABESAPage = () => {
           </div>
         </motion.div>
         
-        {/* Image Carousel */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.4 }}
-          className="mb-16 bg-gradient-to-br from-blue-50 to-indigo-50 rounded-3xl overflow-hidden shadow-xl"
-        >
-          <div className="p-6 md:p-8">
-            <h2 className="text-3xl font-bold text-blue-900 mb-6 text-center">
-              Gallery & Events
-            </h2>
-            
-            <div className="relative">
-              {/* Main Carousel */}
-              <div className="relative h-96 md:h-[500px] rounded-2xl overflow-hidden bg-gray-900">
-                <AnimatePresence mode="wait">
-                  <motion.div
-                    key={currentSlide}
-                    initial={{ opacity: 0, x: 100 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    exit={{ opacity: 0, x: -100 }}
-                    transition={{ duration: 0.5 }}
-                    className="relative w-full h-full"
-                  >
-                    <Image
-                      src={carouselImages[currentSlide]}
-                      alt={`TABESA Event ${currentSlide + 1}`}
-                      fill
-                      className="object-contain"
-                      priority={currentSlide === 0}
-                    />
-                  </motion.div>
-                </AnimatePresence>
-
-                {/* Navigation Arrows */}
-                <button
-                  onClick={prevSlide}
-                  className="absolute left-4 top-1/2 -translate-y-1/2 p-3 bg-white/90 hover:bg-white rounded-full shadow-lg transition-all duration-300 hover:scale-110 z-10"
-                  aria-label="Previous image"
-                >
-                  <ChevronLeft className="w-6 h-6 text-blue-900" />
-                </button>
-                <button
-                  onClick={nextSlide}
-                  className="absolute right-4 top-1/2 -translate-y-1/2 p-3 bg-white/90 hover:bg-white rounded-full shadow-lg transition-all duration-300 hover:scale-110 z-10"
-                  aria-label="Next image"
-                >
-                  <ChevronRight className="w-6 h-6 text-blue-900" />
-                </button>
-
-                {/* Slide Counter */}
-                <div className="absolute bottom-4 right-4 px-4 py-2 bg-black/70 text-white rounded-full text-sm font-medium z-10">
-                  {currentSlide + 1} / {carouselImages.length}
-                </div>
-              </div>
-
-              {/* Thumbnail Navigation */}
-              <div className="flex gap-3 mt-6 overflow-x-auto pb-2">
-                {carouselImages.map((image, index) => (
-                  <button
-                    key={index}
-                    onClick={() => goToSlide(index)}
-                    className={`relative flex-shrink-0 w-24 h-24 rounded-xl overflow-hidden transition-all duration-300 ${
-                      currentSlide === index
-                        ? 'ring-4 ring-blue-600 scale-105'
-                        : 'opacity-60 hover:opacity-100'
-                    }`}
-                  >
-                    <Image
-                      src={image}
-                      alt={`Thumbnail ${index + 1}`}
-                      fill
-                      className="object-cover"
-                    />
-                  </button>
-                ))}
-              </div>
-
-              {/* Auto-play Indicator */}
-              <div className="flex justify-center gap-2 mt-4">
-                {carouselImages.map((_, index) => (
-                  <button
-                    key={index}
-                    onClick={() => goToSlide(index)}
-                    className={`h-2 rounded-full transition-all duration-300 ${
-                      currentSlide === index
-                        ? 'w-8 bg-blue-600'
-                        : 'w-2 bg-blue-300 hover:bg-blue-400'
-                    }`}
-                    aria-label={`Go to slide ${index + 1}`}
-                  />
-                ))}
-              </div>
-            </div>
-          </div>
-        </motion.div>
-        
         <div className="mb-8 border-b">
           <div className="flex overflow-x-auto scrollbar-hide space-x-2">
             {['overview', 'events', 'leadership', 'calendar'].map((tab) => (
@@ -515,6 +403,63 @@ const TABESAPage = () => {
         <div className="min-h-[400px]">
           {renderTabContent()}
         </div>
+
+        {/* Image Gallery Section - Before Footer */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          className="mt-20 mb-12"
+        >
+          <div className="text-center mb-12">
+            <h2 className="text-4xl font-bold text-blue-900 mb-4">
+              Event Gallery
+            </h2>
+            <p className="text-gray-600 text-lg max-w-2xl mx-auto">
+              Highlights from BME Connect Summit 2025 and TABESA events
+            </p>
+          </div>
+
+          {/* Gallery Grid */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {carouselImages.map((image, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, scale: 0.9 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.4, delay: index * 0.1 }}
+                whileHover={{ scale: 1.05, y: -5 }}
+                className="relative group cursor-pointer rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300"
+              >
+                <div className="relative h-72 bg-gray-200">
+                  <Image
+                    src={image}
+                    alt={`TABESA Gallery Image ${index + 1}`}
+                    fill
+                    className="object-cover group-hover:scale-110 transition-transform duration-500"
+                    unoptimized
+                  />
+                  {/* Overlay */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-blue-900/80 via-blue-900/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    <div className="absolute bottom-0 left-0 right-0 p-6">
+                      <div className="flex items-center justify-between text-white">
+                        <span className="text-sm font-semibold">
+                          {index === 0 ? 'BME Connect Summit 2025' : 'Certificate Recognition'}
+                        </span>
+                        <div className="flex items-center gap-2">
+                          <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
+                          <span className="text-xs">Event Highlights</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </motion.div>
       </main>
       
       <Footer />

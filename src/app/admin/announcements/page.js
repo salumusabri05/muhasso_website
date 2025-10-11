@@ -109,47 +109,12 @@ export default function AnnouncementsAdminPage() {
               <div className="px-4 py-5 border-b border-gray-200 sm:px-6">
                 <h3 className="text-lg leading-6 font-medium text-gray-900">Recent Announcements</h3>
               </div>
-              <div className="divide-y divide-gray-200">
-                {Array.from({ length: 3 }).map((_, idx) => (
-                  <div key={idx} className="px-4 py-4 sm:px-6 hover:bg-gray-50">
-                    <div className="flex items-center justify-between">
-                      <p className="text-sm font-medium text-purple-600 truncate">
-                        Important Announcement {idx + 1}
-                      </p>
-                      <div className="ml-2 flex-shrink-0 flex">
-                        <p className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
-                          idx === 0 ? 'bg-red-100 text-red-800' : 
-                          idx === 1 ? 'bg-yellow-100 text-yellow-800' : 
-                          'bg-green-100 text-green-800'
-                        }`}>
-                          {idx === 0 ? 'Urgent' : idx === 1 ? 'Medium' : 'Low'}
-                        </p>
-                      </div>
-                    </div>
-                    <div className="mt-2 sm:flex sm:justify-between">
-                      <div className="sm:flex">
-                        <p className="flex items-center text-sm text-gray-500">
-                          <svg xmlns="http://www.w3.org/2000/svg" className="flex-shrink-0 mr-1.5 h-4 w-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
-                          </svg>
-                          {idx === 0 ? 'Academic' : idx === 1 ? 'Event' : 'General'}
-                        </p>
-                      </div>
-                      <div className="mt-2 flex items-center text-sm text-gray-500 sm:mt-0">
-                        <svg xmlns="http://www.w3.org/2000/svg" className="flex-shrink-0 mr-1.5 h-4 w-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                        </svg>
-                        <p>
-                          Posted on <time dateTime="2025-10-{idx + 1}">Oct {idx + 1}, 2025</time>
-                        </p>
-                      </div>
-                    </div>
-                    <div className="mt-2 flex justify-end space-x-2">
-                      <button className="text-sm text-purple-600 hover:text-purple-900">Edit</button>
-                      <button className="text-sm text-red-600 hover:text-red-900">Delete</button>
-                    </div>
-                  </div>
-                ))}
+              <div className="px-4 py-12 text-center">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-16 w-16 mx-auto text-gray-400 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z" />
+                </svg>
+                <h3 className="text-lg font-medium text-gray-900 mb-2">No Announcements Yet</h3>
+                <p className="text-gray-600">Create your first announcement using the form above.</p>
               </div>
               <div className="px-4 py-4 sm:px-6 border-t border-gray-200">
                 <a href="#" className="text-sm font-medium text-purple-600 hover:text-purple-500">
