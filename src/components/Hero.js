@@ -7,7 +7,7 @@ import { Users } from 'lucide-react';
 const HeroSection = ({ 
   title = "Discover. Connect. Celebrate Student Life at MUHAS.",
   subtitle = "Explore student associations, clubs and religious groups ",
-  exploreClubsLink = "/clubs",
+  exploreClubsLink = "/religion-clubs",
   seeEventsLink = "/events"
 }) => {
   return (

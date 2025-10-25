@@ -6,87 +6,110 @@ import Footer from '../../components/Footer';
 import Link from 'next/link';
 import { ChevronRight, Users, Calendar, Book, Music, Heart, CrossIcon, Smile, Star, Dumbbell, MessageCircle } from 'lucide-react';
 
-export default function ReligionClubs() {
-  // Religious groups data
-  const religiousGroups = [
-    {
-      id: 'casefeta',
-      name: 'CASEFETA',
-      fullName: 'Christian Students Fellowship Tanzania',
-      description: 'A vibrant Christian community fostering spiritual growth, fellowship, and service among MUHAS students through Bible study, prayer meetings, and outreach activities.',
-      color: 'text-blue-600',
-      bgColor: 'bg-blue-50',
-      borderColor: 'border-blue-200',
-      icon: <CrossIcon className="w-10 h-10" />
-    },
-    {
-      id: 'msamu',
-      name: 'MSAMU',
-      fullName: 'Muslim Students Association of Muhimbili',
-      description: 'An organization dedicated to supporting Muslim students at MUHAS through Islamic education, community prayer, spiritual development, and cultural activities.',
-      color: 'text-green-600',
-      bgColor: 'bg-green-50',
-      borderColor: 'border-green-200',
-      icon: <Star className="w-10 h-10" />
-    },
-    {
-      id: 'anglican',
-      name: 'Anglican Students Association',
-      fullName: 'Anglican Students Association',
-      description: 'Providing spiritual support and community for Anglican students at MUHAS through worship services, Bible study, and fellowship activities aligned with Anglican traditions.',
-      color: 'text-purple-600',
-      bgColor: 'bg-purple-50',
-      borderColor: 'border-purple-200',
-      icon: <Book className="w-10 h-10" />
-    },
-    {
-      id: 'catholic',
-      name: 'Catholic Students Association',
-      fullName: 'Catholic Students Association',
-      description: 'Nurturing the faith life of Catholic students at MUHAS through Mass, sacraments, spiritual formation, and service opportunities in accordance with Catholic teachings.',
-      color: 'text-red-600',
-      bgColor: 'bg-red-50',
-      borderColor: 'border-red-200',
-      icon: <Heart className="w-10 h-10" />
-    }
-  ];
-  
-  // Other clubs data
-  const otherClubs = [
-    {
-      id: 'sports',
-      name: 'Sports Clubs',
-      description: 'Various sports teams and recreational activities including football, basketball, volleyball, athletics, and fitness groups for physical wellness and friendly competition.',
-      color: 'text-amber-600',
-      bgColor: 'bg-amber-50',
-      borderColor: 'border-amber-200',
-      icon: <Dumbbell className="w-10 h-10" />
-    },
-    {
-      id: 'arts',
-      name: 'Arts & Cultural Clubs',
-      description: 'Creative expression through drama, dance, music, and visual arts, celebrating cultural diversity and providing artistic outlets for MUHAS students.',
-      color: 'text-indigo-600',
-      bgColor: 'bg-indigo-50',
-      borderColor: 'border-indigo-200',
-      icon: <Music className="w-10 h-10" />
-    },
-    {
-      id: 'debate',
-      name: 'Debate Club',
-      description: 'Forum for developing critical thinking, public speaking, and argumentation skills through regular debates on healthcare, ethics, policy, and contemporary issues.',
-      color: 'text-emerald-600',
-      bgColor: 'bg-emerald-50',
-      borderColor: 'border-emerald-200',
-      icon: <MessageCircle className="w-10 h-10" />
-    }
-  ];
+// Religious groups data
+const religiousGroups = [
+  {
+    id: 'casefeta',
+    name: 'CASEFETA',
+    fullName: 'Christian Students Fellowship Tanzania',
+    description: 'A vibrant Christian community fostering spiritual growth, fellowship, and service among MUHAS students through Bible study, prayer meetings, and outreach activities.',
+    color: 'text-blue-600',
+    bgColor: 'bg-blue-50',
+    borderColor: 'border-blue-200',
+    icon: <CrossIcon className="w-10 h-10" />
+  },
+  {
+    id: 'msamu',
+    name: 'MSAMU',
+    fullName: 'Muslim Students Association of Muhimbili',
+    description: 'An organization dedicated to supporting Muslim students at MUHAS through Islamic education, community prayer, spiritual development, and cultural activities.',
+    color: 'text-green-600',
+    bgColor: 'bg-green-50',
+    borderColor: 'border-green-200',
+    icon: <Star className="w-10 h-10" />
+  },
+  {
+    id: 'anglican',
+    name: 'Anglican Students Association',
+    fullName: 'Anglican Students Association',
+    description: 'Providing spiritual support and community for Anglican students at MUHAS through worship services, Bible study, and fellowship activities aligned with Anglican traditions.',
+    color: 'text-purple-600',
+    bgColor: 'bg-purple-50',
+    borderColor: 'border-purple-200',
+    icon: <Book className="w-10 h-10" />
+  },
+  {
+    id: 'catholic',
+    name: 'Catholic Students Association',
+    fullName: 'Catholic Students Association',
+    description: 'Nurturing the faith life of Catholic students at MUHAS through Mass, sacraments, spiritual formation, and service opportunities in accordance with Catholic teachings.',
+    color: 'text-red-600',
+    bgColor: 'bg-red-50',
+    borderColor: 'border-red-200',
+    icon: <Heart className="w-10 h-10" />
+  }
+];
 
+// Other clubs data
+const otherClubs = [
+  {
+    id: 'sports',
+    name: 'Sports Clubs',
+    description: 'Various sports teams and recreational activities including football, basketball, volleyball, athletics, and fitness groups for physical wellness and friendly competition.',
+    color: 'text-amber-600',
+    bgColor: 'bg-amber-50',
+    borderColor: 'border-amber-200',
+    icon: <Dumbbell className="w-10 h-10" />
+  },
+  {
+    id: 'arts',
+    name: 'Arts & Cultural Clubs',
+    description: 'Creative expression through drama, dance, music, and visual arts, celebrating cultural diversity and providing artistic outlets for MUHAS students.',
+    color: 'text-indigo-600',
+    bgColor: 'bg-indigo-50',
+    borderColor: 'border-indigo-200',
+    icon: <Music className="w-10 h-10" />
+  },
+  {
+    id: 'debate',
+    name: 'Debate Club',
+    description: 'Forum for developing critical thinking, public speaking, and argumentation skills through regular debates on healthcare, ethics, policy, and contemporary issues.',
+    color: 'text-emerald-600',
+    bgColor: 'bg-emerald-50',
+    borderColor: 'border-emerald-200',
+    icon: <MessageCircle className="w-10 h-10" />
+  }
+];
+
+// Add clubs data (can be expanded later)
+const clubsData = [
+  {
+    id: 'big-future',
+    name: 'BIG FUTURE Club',
+    description: 'Empowering students with skills in entrepreneurship, digital marketing, and innovation. Weekly workshops and networking events.',
+    icon: <Star className="w-10 h-10 text-purple-600" />,
+    color: 'text-purple-600',
+    bgColor: 'bg-purple-50',
+    borderColor: 'border-purple-200',
+  },
+  {
+    id: 'book-club',
+    name: 'MUHAS Book Club',
+    description: 'A community of book lovers sharing and discussing literature, hosting reading sessions and author meetups.',
+    icon: <Book className="w-10 h-10 text-blue-600" />,
+    color: 'text-blue-600',
+    bgColor: 'bg-blue-50',
+    borderColor: 'border-blue-200',
+  },
+];
+
+export default function ReligionClubs() {
   return (
     <main className="min-h-screen flex flex-col bg-white animate-fadeIn">
       <Header />
       
-      <div className="flex-grow container mx-auto px-6 py-12">
+      {/* Add top padding to prevent nav overlap */}
+      <div className="flex-grow container mx-auto px-6 py-12 pt-24">
         <div className="max-w-5xl mx-auto">
           <h1 className="text-3xl md:text-4xl font-bold text-blue-900 mb-8 animate-slideDown">Religion & Clubs</h1>
           
@@ -169,6 +192,37 @@ export default function ReligionClubs() {
                       className={`inline-flex items-center ${club.color} font-medium transition-all hover:underline hover:translate-x-1 transform duration-200`}
                     >
                       View Details
+                      <ChevronRight className="w-4 h-4 ml-1" />
+                    </Link>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </section>
+          
+          {/* Clubs Section (NEW) */}
+          <section className="mb-12 animate-slideUp delay-350">
+            <h2 className="text-2xl font-bold text-blue-900 mb-6">Student Clubs</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {clubsData.map((club, idx) => (
+                <div
+                  key={club.id}
+                  className={`${club.bgColor} border ${club.borderColor} rounded-xl overflow-hidden h-full animate-slideInRight`}
+                  style={{ animationDelay: `${(idx + 1) * 150}ms` }}
+                >
+                  <div className="p-6">
+                    <div className="flex items-center mb-4">
+                      <div className={`${club.color} mr-4`}>
+                        {club.icon}
+                      </div>
+                      <h3 className="text-xl font-semibold text-blue-900">{club.name}</h3>
+                    </div>
+                    <p className="text-gray-700 mb-6">{club.description}</p>
+                    <Link
+                      href={`/clubs/${club.id}`}
+                      className={`inline-flex items-center ${club.color} font-medium transition-all hover:underline hover:translate-x-1 transform duration-200`}
+                    >
+                      Explore More
                       <ChevronRight className="w-4 h-4 ml-1" />
                     </Link>
                   </div>
