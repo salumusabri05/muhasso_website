@@ -85,14 +85,14 @@ const TABESAPage = () => {
   const leadershipTeam = [
     {
       id: 1,
-      name: 'Ibrahim Mohamed',
+      name: 'Alyy Abasi',
       position: 'Chairperson',
       image: '/asscociation_details/tabesa/leader1.jpg',
       bio: 'Final year biomedical engineering student specializing in medical imaging technologies.',
     },
     {
       id: 2,
-      name: 'Sarah Mwakasege',
+      name: 'Davina kanaani',
       position: 'Secretary',
       image: '/asscociation_details/tabesa/leader2.jpg',
       bio: '3rd year student focusing on healthcare technology management systems.',
